@@ -1,3 +1,14 @@
+/***************************************************************
+* file: FinalProgram.java
+* author: L. Chua, A. Sun, M. Yang
+* class: CS 4450 – Computer Graphics
+*
+* assignment: final program
+* date last modified: 10/4/20
+*
+* purpose: This program creates a blockly game.
+*
+****************************************************************/
 package finalprogram;
 
 import org.lwjgl.util.vector.Vector3f;
@@ -17,6 +28,8 @@ public class FPCameraController {
     private float pitch = 0.0f;
     private Vector3Float me;
     
+    //method: FPCameraController
+    //purpose: 
     public FPCameraController(float x, float y, float z)
     {
         //instantiate position Vector3f to the x y z params.
@@ -27,7 +40,8 @@ public class FPCameraController {
         lPosition.z = 0f;
     }
     
-    //increment the camera's current yaw rotation
+    //method: yaw
+    //purpose: Increment the camera's current yaw rotation
     public void yaw(float amount)
     {
         //increment the yaw by the amount param
@@ -41,7 +55,8 @@ public class FPCameraController {
         pitch -= amount;
     }
     
-    //moves the camera forward relative to its current rotation (yaw)
+    //method: pitch
+    //purpose: Moves the camera forward relative to its current rotation (yaw)
     public void walkForward(float distance)
     {
         float xOffset = distance * (float)Math.sin(Math.toRadians(yaw));
@@ -50,7 +65,8 @@ public class FPCameraController {
         position.z += zOffset;
     }
     
-    //moves the camera backward relative to its current rotation (yaw)
+    //method: walkBackwards
+    //purpose: moves the camera backward relative to its current rotation (yaw)
     public void walkBackwards(float distance)
     {
         float xOffset = distance * (float)Math.sin(Math.toRadians(yaw));
@@ -59,7 +75,8 @@ public class FPCameraController {
         position.z -= zOffset;
     }
     
-    //strafes the camera left relative to its current rotation (yaw)
+    //method: strafeLeft
+    //purpose: Strafes the camera left relative to its current rotation (yaw)
     public void strafeLeft(float distance)
     {
         float xOffset = distance * (float)Math.sin(Math.toRadians(yaw-90));
@@ -68,7 +85,8 @@ public class FPCameraController {
         position.z += zOffset;
     }
     
-    //strafes the camera right relative to its current rotation (yaw)
+    //method: strafeRight
+    //purpose: Strafes the camera right relative to its current rotation (yaw)
     public void strafeRight(float distance)
     {
         float xOffset = distance * (float)Math.sin(Math.toRadians(yaw+90));
@@ -76,20 +94,23 @@ public class FPCameraController {
         position.x -= xOffset;
         position.z += zOffset;
     }
-
-    //moves the camera up relative to its current rotation (yaw)
+    
+    //method: moveUp
+    //purpose: moves the camera up relative to its current rotation (yaw)
     public void moveUp(float distance)
     {
         position.y -= distance;
     }
     
-    //moves the camera down
+    //method: moveDown
+    //purpose: Moves the camera down
     public void moveDown(float distance)
     {
         position.y += distance;
     }
     
-    //translates and rotate the matrix so that it looks through the camera
+    //method: lookThrough
+    //purpose: Translates and rotate the matrix so that it looks through the camera
     //this does basically what gluLookAt() does
     public void lookThrough()
     {
@@ -101,6 +122,8 @@ public class FPCameraController {
         glTranslatef(position.x, position.y, position.z);
     }
     
+    //method: gameLoop
+    //purpose: Processes controls and graphics every frame
     public void gameLoop()
     {
         FPCameraController camera = new FPCameraController(0, 0, 0);
@@ -179,6 +202,8 @@ public class FPCameraController {
         Display.destroy();
     }
     
+    //method: render
+    //purpose: renders a cube 
     private void render() {
         try {
             glBegin(GL_QUADS);
@@ -206,14 +231,12 @@ public class FPCameraController {
             glVertex3f(-1.0f,-1.0f,-1.0f);
             glVertex3f(-1.0f, 1.0f,-1.0f);
             glVertex3f( 1.0f, 1.0f,-1.0f);
-            
             //Left
             glColor3f(0.0f,0.5f,1.0f);
             glVertex3f(-1.0f, 1.0f,1.0f);
             glVertex3f(-1.0f, 1.0f,-1.0f);
             glVertex3f(-1.0f,-1.0f,-1.0f);
             glVertex3f(-1.0f,-1.0f, 1.0f);
-            
             //Right
             glColor3f(0.7f,0.5f,1.0f);
             glVertex3f( 1.0f, 1.0f,-1.0f);
@@ -221,6 +244,7 @@ public class FPCameraController {
             glVertex3f( 1.0f,-1.0f, 1.0f);
             glVertex3f( 1.0f,-1.0f,-1.0f);
             glEnd();
+            
             glBegin(GL_LINE_LOOP);
             //Top
             glColor3f(0.0f,0.0f,0.0f);
@@ -243,7 +267,6 @@ public class FPCameraController {
             glVertex3f(-1.0f,-1.0f, 1.0f);
             glVertex3f( 1.0f,-1.0f, 1.0f);
             glEnd();
-            
             glBegin(GL_LINE_LOOP);
             //Back
             glVertex3f( 1.0f,-1.0f,-1.0f);
