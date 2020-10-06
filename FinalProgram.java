@@ -21,6 +21,16 @@ import java.util.ArrayList;
 import org.lwjgl.input.Keyboard;
 
 public class FinalProgram {
+    
+    private float dx;
+    private float dy;
+    private float roll;
+    
+    public FinalProgram() {
+        dx = 0;
+        dy = 0;
+        roll = 0;
+    }
 
     // method: start
     // purpose: Tries to create the window, initialize GL, and render the image.
@@ -63,33 +73,54 @@ public class FinalProgram {
     
     // method: render
     // purpose: Draw on the screen.
+    // W - Moves the camera up
+    // S - Moves the camera down
+    // A - Moves the camera left
+    // D - Moves the camera right
+    // Q - Rotates the camera counter-clockwise
+    // E - Rotates the camera clockwise
     // Pressing Esc - Exits the window and program.
     private void render() {
         
         while (!Display.isCloseRequested()) {
             try{
+                    processInput();
                     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
                     glLoadIdentity();
-                    glPointSize(1);
-                    glColor3f(0f, 1f, 0f); // Green
-                    glTranslatef(2f, 2f, 4f); // Translate (2,2,4)
-                    glTranslatef(2f, 2f, 2f); // Translate (2,2,2) Since cube is centered here.
-                    glScalef(1f, 2f, 3f); // Scale (1,2,3)
-                    glRotatef(90f, 0f, 0f, 1f); // Rotate 90 around z-axis
-                    glRotatef(60f, 0f, 1f, 0f); // Rotate 60 around y-axis
-                    glRotatef(30f, 1f, 0f, 0f); // Rotate 30 around x-axis
-                    glTranslatef(-2f, -2f, -2f); // Translate (2,2,2) Since cube is centered here, need to translate back.
-                    glBegin(GL_QUADS);
-                    // Draw
-                    glEnd();
-                    Display.update();
+                    // glPointSize(1); // Don't need point size
                     
-                    // Esacpe key - Exits the window and program.            
-                    if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
-                    {
-                        System.exit(0);
-                    }
+                    glPushMatrix();
+                    
+                    // Move camera up, down, left and/or right
+                    glTranslatef(dx,dy,0f);
+                    
+                    // Roll
+                    glRotatef(0f+roll,0,0,1);
+                    
+                    // glColor3f(0f, 1f, 0f); // Green
+                    
+                    // This code is for 3D transformations (Lecture 7)
+//                    glTranslatef(2f, 2f, 4f); // Translate (2,2,4)
+//                    glTranslatef(2f, 2f, 2f); // Translate (2,2,2) Since cube is centered here.
+//                    glScalef(1f, 2f, 3f); // Scale (1,2,3)
+//                    glRotatef(90f, 0f, 0f, 1f); // Rotate 90 around z-axis
+//                    glRotatef(60f, 0f, 1f, 0f); // Rotate 60 around y-axis
+//                    glRotatef(30f, 1f, 0f, 0f); // Rotate 30 around x-axis
+//                    glTranslatef(-2f, -2f, -2f); // Translate (2,2,2) Since cube is centered here, need to translate back.
+                    glBegin(GL_QUADS);
 
+                    glColor3f(1.0f,1.0f,0.0f);
+                    glVertex3f( 100.0f,-100.0f,0f);
+                    glColor3f(1.0f,0.0f,0.0f);
+                    glVertex3f(-100.0f,-100.0f,0.0f);
+                    glColor3f(0.0f,0.0f,1.0f);
+                    glVertex3f(-100.0f, 100.0f,0.0f);
+                    glColor3f(0f,1f,0f);
+                    glVertex3f( 100.0f, 100.0f,0.0f);
+                    
+                    glEnd();
+                    glPopMatrix();
+                    Display.update();
                     Display.sync(60);
             }
             catch(Exception e){
@@ -97,6 +128,43 @@ public class FinalProgram {
         }
         
         Display.destroy();
+    }
+    
+    // 2D Viewing (Lecture 8)
+    // method: processInput
+    // purpose: Takes input if a key is pressed
+    // W - Moves the camera up
+    // S - Moves the camera down
+    // A - Moves the camera left
+    // D - Moves the camera right
+    // Q - Rotates the camera counter-clockwise
+    // E - Rotates the camera clockwise
+    // Esc - Exits the program
+    public void processInput(){
+        if (Keyboard.isKeyDown(Keyboard.KEY_W)) {
+            dy++;
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_S)) {
+            dy--;
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_A)) {
+            dx--;
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_D)) {
+            dx++;
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
+            roll++;
+        }
+        if (Keyboard.isKeyDown(Keyboard.KEY_Q)) {
+            roll--;
+        }
+
+        // Esacpe key - Exits the window and program.            
+        if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE))
+        {
+            System.exit(0);
+        }
     }
     
     // method: main
