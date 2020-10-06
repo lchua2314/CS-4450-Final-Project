@@ -165,6 +165,10 @@ public class FPCameraController {
             glLoadIdentity();
             //look through the camera before you draw anything
             camera.lookThrough();
+            
+            //Enable depth buffer to prevent overlapping
+            glEnable(GL_DEPTH_TEST); 
+            
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             //you would draw your scene here.
             render();
