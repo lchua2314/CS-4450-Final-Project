@@ -52,7 +52,7 @@ public class FinalProgram {
             }
         }
         Display.setDisplayMode(displayMode);
-        Display.setTitle("Hey Mom! I am using” + “OpenGL!!!");
+        Display.setTitle("FinalProgram");
         Display.create();
     }
     
