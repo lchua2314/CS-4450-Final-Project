@@ -157,7 +157,7 @@ public class FPCameraController {
                 camera.moveUp(movementSpeed);
             }
 
-            if (Keyboard.isKeyDown(Keyboard.KEY_E)) {
+            if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
                 camera.moveDown(movementSpeed);
             }
 
