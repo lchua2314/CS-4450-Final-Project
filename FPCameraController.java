@@ -1,12 +1,13 @@
 /***************************************************************
-* file: FinalProgram.java
+* file: FPCameraController.java
 * author: L. Chua, A. Sun, M. Yang
 * class: CS 4450 – Computer Graphics
 *
 * assignment: final program
 * date last modified: 10/4/20
 *
-* purpose: This program creates a blockly game.
+* purpose: This program creates a cube and controls how the camera
+* works.
 *
 ****************************************************************/
 package finalprogram;
@@ -29,7 +30,8 @@ public class FPCameraController {
     private Vector3Float me;
     
     //method: FPCameraController
-    //purpose: 
+    //purpose: Constructor that hold user's camera's view
+    //in 3D space.
     public FPCameraController(float x, float y, float z)
     {
         //instantiate position Vector3f to the x y z params.
@@ -41,21 +43,22 @@ public class FPCameraController {
     }
     
     //method: yaw
-    //purpose: Increment the camera's current yaw rotation
+    //purpose: Increment the camera's current yaw rotation (y-axis)(left and right)
     public void yaw(float amount)
     {
         //increment the yaw by the amount param
         yaw += amount;
     }
     
-    //increment the camera's current yaw rotation
+    //method: pitch
+    //purpose: Increment the camera's current pitch rotation (x-axis)(up and down)
     public void pitch(float amount)
     {
         //increment the pitch by the amount param
         pitch -= amount;
     }
     
-    //method: pitch
+    //method: walkForward
     //purpose: Moves the camera forward relative to its current rotation (yaw)
     public void walkForward(float distance)
     {
@@ -103,7 +106,7 @@ public class FPCameraController {
     }
     
     //method: moveDown
-    //purpose: Moves the camera down
+    //purpose: moves the camera down relative to its current rotation (yaw)
     public void moveDown(float distance)
     {
         position.y += distance;
@@ -114,9 +117,9 @@ public class FPCameraController {
     //this does basically what gluLookAt() does
     public void lookThrough()
     {
-        //roatate the pitch around the X axis
+        //rotate the pitch around the X axis
         glRotatef(pitch, 1.0f, 0.0f, 0.0f);
-        //roatate the yaw around the Y axis
+        //rotate the yaw around the Y axis
         glRotatef(yaw, 0.0f, 1.0f, 0.0f);
         //translate to the position vector's location
         glTranslatef(position.x, position.y, position.z);
@@ -175,11 +178,11 @@ public class FPCameraController {
             if (Keyboard.isKeyDown(Keyboard.KEY_D)){
             camera.strafeRight(movementSpeed);
             }
-            // Move up
+            //move up
             if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
                 camera.moveUp(movementSpeed);
             }
-
+            //move down
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
                 camera.moveDown(movementSpeed);
             }
@@ -207,6 +210,8 @@ public class FPCameraController {
     private void render() {
         try {
             glBegin(GL_QUADS);
+            
+            // Draw six sides of a cube with different colors.
             //Top
             glColor3f(0.0f,0.0f,1.0f);
             glVertex3f( 1.0f, 1.0f,-1.0f);
@@ -245,6 +250,8 @@ public class FPCameraController {
             glVertex3f( 1.0f,-1.0f,-1.0f);
             glEnd();
             
+            
+            // Draw outlines of each side of the cube.
             glBegin(GL_LINE_LOOP);
             //Top
             glColor3f(0.0f,0.0f,0.0f);

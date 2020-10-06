@@ -6,12 +6,13 @@
 * assignment: final program
 * date last modified: 10/4/20
 *
-* purpose: This program creates a blockly game.
+* purpose: This program contains the main method to run the program.
+* It also controls the initialization of the window, its width and 
+* height in pixels and display.
 *
 ****************************************************************/
 package finalprogram;
 
-import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import static org.lwjgl.opengl.GL11.*;
@@ -52,7 +53,7 @@ public class FinalProgram {
             }
         }
         Display.setDisplayMode(displayMode);
-        Display.setTitle("FinalProgram");
+        Display.setTitle("Final Program");
         Display.create();
     }
     
