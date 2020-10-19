@@ -20,7 +20,7 @@ import org.lwjgl.util.glu.GLU;
 
 public class FinalProgram {
     
-    private FPCameraController fp = new FPCameraController(0f,0f,0f);
+    private FPCameraController fp = null;
     private DisplayMode displayMode;
     
     // method: start
@@ -31,6 +31,7 @@ public class FinalProgram {
         try {
                 createWindow();
                 initGL();
+                fp = new FPCameraController(0f,0f,0f);
                 fp.gameLoop();//render();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -62,6 +63,9 @@ public class FinalProgram {
     // loads camera and Identity matrix, sets up orthographic matrix,
     // Model view and some rendering hints
     private void initGL() {
+        glEnableClientState(GL_VERTEX_ARRAY);
+        glEnableClientState(GL_COLOR_ARRAY);
+        glEnable(GL_DEPTH_TEST);
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
         glMatrixMode(GL_PROJECTION);
         glLoadIdentity();

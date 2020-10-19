@@ -29,6 +29,9 @@ public class FPCameraController {
     private float pitch = 0.0f;
     private Vector3Float me;
     
+    // New Chunk Object
+    Chunk chunkPosition = null;
+    
     //method: FPCameraController
     //purpose: Constructor that hold user's camera's view
     //in 3D space.
@@ -40,6 +43,8 @@ public class FPCameraController {
         lPosition.x = 0f;
         lPosition.y = 15f;
         lPosition.z = 0f;
+        // New Chuck object
+        chunkPosition = new Chunk((int)x, (int)y, (int)z);
     }
     
     //method: yaw
@@ -197,7 +202,8 @@ public class FPCameraController {
             
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             //you would draw your scene here.
-            render();
+            // render(); // No need for render() for lecture 13.
+            chunkPosition.render();
             //draw the buffer to the screen
             Display.update();
             Display.sync(60);
@@ -205,6 +211,8 @@ public class FPCameraController {
         Display.destroy();
     }
     
+    /*
+    // No need for this since lecture 13.
     //method: render
     //purpose: renders a cube 
     private void render() {
@@ -299,4 +307,5 @@ public class FPCameraController {
         }catch(Exception e){
         }
     }
+*/
 }
