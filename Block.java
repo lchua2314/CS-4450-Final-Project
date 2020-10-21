@@ -45,7 +45,7 @@ public class Block {
     }
     
     //method: Block
-    //purpose: Constructor fo block
+    //purpose: Constructor for block
     public Block(BlockType type){
         Type= type;
     }
