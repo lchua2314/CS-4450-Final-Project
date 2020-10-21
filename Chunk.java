@@ -297,35 +297,35 @@ public class Chunk {
             case 2: //water
                 return new float[] {
                     // BOTTOM QUAD(DOWN=+Y)
-                    x + offset*15, y + offset*1, //right, bottom
-                    x + offset*14, y + offset*1, //left, bottom
-                    x + offset*14, y + offset*0, //left, top
-                    x + offset*15, y + offset*0, //right, top
+                    x + offset*2, y + offset*12, //right, bottom
+                    x + offset*1, y + offset*12, //left, bottom
+                    x + offset*1, y + offset*11, //left, top
+                    x + offset*2, y + offset*11, //right, top
                     // TOP!
-                    x + offset*15, y + offset*1, 
-                    x + offset*14, y + offset*1, 
-                    x + offset*14, y + offset*0, 
-                    x + offset*15, y + offset*0,
+                    x + offset*2, y + offset*12, 
+                    x + offset*1, y + offset*12, 
+                    x + offset*1, y + offset*11, 
+                    x + offset*2, y + offset*11,
                     // FRONT QUAD
-                    x + offset*15, y + offset*1, 
-                    x + offset*14, y + offset*1, 
-                    x + offset*14, y + offset*0, 
-                    x + offset*15, y + offset*0,
+                    x + offset*2, y + offset*12, 
+                    x + offset*1, y + offset*12, 
+                    x + offset*1, y + offset*11, 
+                    x + offset*2, y + offset*11,
                     // BACK QUAD
-                    x + offset*15, y + offset*1, 
-                    x + offset*14, y + offset*1, 
-                    x + offset*14, y + offset*0, 
-                    x + offset*15, y + offset*0,
+                    x + offset*2, y + offset*12, 
+                    x + offset*1, y + offset*12, 
+                    x + offset*1, y + offset*11, 
+                    x + offset*2, y + offset*11,
                     // LEFT QUAD
-                    x + offset*15, y + offset*1, 
-                    x + offset*14, y + offset*1, 
-                    x + offset*14, y + offset*0, 
-                    x + offset*15, y + offset*0,
+                    x + offset*2, y + offset*12, 
+                    x + offset*1, y + offset*12, 
+                    x + offset*1, y + offset*11, 
+                    x + offset*2, y + offset*11,
                     // RIGHT QUAD
-                    x + offset*15, y + offset*1, 
-                    x + offset*14, y + offset*1, 
-                    x + offset*14, y + offset*0, 
-                    x + offset*15, y + offset*0,};
+                    x + offset*2, y + offset*12, 
+                    x + offset*1, y + offset*12, 
+                    x + offset*1, y + offset*11, 
+                    x + offset*2, y + offset*11,};
             case 3: //dirt
                 return new float[] {
                     // BOTTOM QUAD(DOWN=+Y)
