@@ -63,6 +63,9 @@ public class FinalProgram {
     // loads camera and Identity matrix, sets up orthographic matrix,
     // Model view and some rendering hints
     private void initGL() {
+        glEnable(GL_TEXTURE_2D);
+        glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+        // Above two lines could cause crash.
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_COLOR_ARRAY);
         glEnable(GL_DEPTH_TEST);

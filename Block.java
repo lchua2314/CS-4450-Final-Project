@@ -43,7 +43,7 @@ public class Block {
             BlockID = i;
         }
     }
-    
+
     //method: Block
     //purpose: Constructor for block
     public Block(BlockType type){
@@ -57,21 +57,21 @@ public class Block {
         this.y = y;
         this.z = z;
     }
-    
+
     //method: IsActive
-    //purpose: Getter for IsActive
+    //purpose: Getter for IsActive    
     public boolean IsActive() {
         return IsActive;
     }
-    
+
     //method: SetActive
-    //purpose: Setter for IsActive
+    //purpose: Setter for IsActive    
     public void SetActive(boolean active){
         IsActive = active;
     }
-    
+
     //method: GetID
-    //purpose: Getter for ID
+    //purpose: Getter for ID    
     public int GetID(){
         return Type.GetID();
     }
