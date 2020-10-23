@@ -32,7 +32,8 @@ public class Chunk {
     private Texture texture;
     
     // method: render
-    // purpose: Renders the chunk    
+    // purpose: Renders by binding buffers, textures, 
+    // creating pointers and draw arrays.
     public void render(){
         glPushMatrix();
         glBindBuffer(GL_ARRAY_BUFFER, VBOTextureHandle);
@@ -50,8 +51,9 @@ public class Chunk {
         glPopMatrix();
     }
 
-    //method: rebuildMesh
-    //purpose: Rebuilds the mesh    
+    // method: rebuildMesh
+    // purpose: Inputs three floats: startX, startY and startZ,
+    // creates float buffers, creates textures for cubes, and binds buffers.
     public void rebuildMesh(
         float startX, float startY, float startZ) {
         VBOTextureHandle = glGenBuffers(); // placed among the other VBOs
@@ -112,7 +114,9 @@ public class Chunk {
     }
 
     // method: createCubeVertexCol
-    // purpose: Makes a column for cubes    
+    // purpose: Takes in input for CubeColorArray,
+    // initializes cubeColors on the heap, assigns CubeColorArray's data to
+    // cubeColors and returns cubeColors as a float.
     private float[] createCubeVertexCol(float[] CubeColorArray) {
         float[] cubeColors = new float[CubeColorArray.length * 4 * 6];
         for (int i = 0; i < cubeColors.length; i++) {
@@ -123,45 +127,48 @@ public class Chunk {
     }
     
     // method: createCube
-    // purpose: Creates a cube     
+    // purpose: Takes inputs of coordinates in floats: x, y, and z.
+    // Returns a new float array with coordinates of where the
+    // cube is located with offsets.
     public static float[] createCube(float x, float y, float z) {
         int offset = CUBE_LENGTH / 2;
         return new float[] {
-        // TOP QUAD
-        x + offset, y + offset, z,
-        x - offset, y + offset, z,
-        x - offset, y + offset, z - CUBE_LENGTH,
-        x + offset, y + offset, z - CUBE_LENGTH,
-        // BOTTOM QUAD
-        x + offset, y - offset, z - CUBE_LENGTH,
-        x - offset, y - offset, z - CUBE_LENGTH,
-        x - offset, y - offset, z,
-        x + offset, y - offset, z,
-        // FRONT QUAD
-        x + offset, y + offset, z - CUBE_LENGTH,
-        x - offset, y + offset, z - CUBE_LENGTH,
-        x - offset, y - offset, z - CUBE_LENGTH,
-        x + offset, y - offset, z - CUBE_LENGTH,
-        // BACK QUAD
-        x + offset, y - offset, z,
-        x - offset, y - offset, z,
-        x - offset, y + offset, z,
-        x + offset, y + offset, z,
-        // LEFT QUAD
-        x - offset, y + offset, z - CUBE_LENGTH,
-        x - offset, y + offset, z,
-        x - offset, y - offset, z,
-        x - offset, y - offset, z - CUBE_LENGTH,
-        // RIGHT QUAD
-        x + offset, y + offset, z,
-        x + offset, y + offset, z - CUBE_LENGTH,
-        x + offset, y - offset, z - CUBE_LENGTH,
-        x + offset, y - offset, z };
+            // TOP QUAD
+            x + offset, y + offset, z,
+            x - offset, y + offset, z,
+            x - offset, y + offset, z - CUBE_LENGTH,
+            x + offset, y + offset, z - CUBE_LENGTH,
+            // BOTTOM QUAD
+            x + offset, y - offset, z - CUBE_LENGTH,
+            x - offset, y - offset, z - CUBE_LENGTH,
+            x - offset, y - offset, z,
+            x + offset, y - offset, z,
+            // FRONT QUAD
+            x + offset, y + offset, z - CUBE_LENGTH,
+            x - offset, y + offset, z - CUBE_LENGTH,
+            x - offset, y - offset, z - CUBE_LENGTH,
+            x + offset, y - offset, z - CUBE_LENGTH,
+            // BACK QUAD
+            x + offset, y - offset, z,
+            x - offset, y - offset, z,
+            x - offset, y + offset, z,
+            x + offset, y + offset, z,
+            // LEFT QUAD
+            x - offset, y + offset, z - CUBE_LENGTH,
+            x - offset, y + offset, z,
+            x - offset, y - offset, z,
+            x - offset, y - offset, z - CUBE_LENGTH,
+            // RIGHT QUAD
+            x + offset, y + offset, z,
+            x + offset, y + offset, z - CUBE_LENGTH,
+            x + offset, y - offset, z - CUBE_LENGTH,
+            x + offset, y - offset, z };
     }
     
     // method: getCubeColor
-    // purpose: Returns cube color but only return new float since
-    // program uses texture    
+    // purpose: Returns new float array 
+    // with three 1's since the program 
+    // now uses textures for the cubes.
     private float[] getCubeColor(Block block) {
         /*
         // Old as of lecture 14
@@ -177,7 +184,12 @@ public class Chunk {
     }
 
     // method: Chunk
-    // purpose: Constructor
+    // purpose: Constructor that takes in three integer inputs: startX, startY, and startZ, 
+    // tries to use "terrain.png" image file as textures for the cubes 
+    // (if it is not found in project folder, catch the exception and prompt the user), 
+    // use a random number to determine block types, creates the blocks within the chunk,
+    // creates gen buffers, assigns StartX, StartY, and StartZ and lastly, calls rebuildMesh()
+    // with integer inputs: startX, startY, and startZ.
     public Chunk(int startX, int startY, int startZ) {
         try{texture = TextureLoader.getTexture("PNG",
             ResourceLoader.getResourceAsStream("terrain.png"));
@@ -186,7 +198,7 @@ public class Chunk {
         {
             System.out.print("ER-ROAR!");
         }
-        r= new Random();
+        r = new Random();
         Blocks = new Block[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
         for (int x = 0; x < CHUNK_SIZE; x++) {
             for (int y = 0; y < CHUNK_SIZE; y++) {
@@ -227,9 +239,12 @@ public class Chunk {
     
     // method: createTexCube
     // purpose: Returns the texture based on the cube's type
+    // with adding the offsets mulptipled by a number to
+    // determine which coordnates are used to find the textures
+    // to map from "terrain.png".
     public static float[] createTexCube(float x, float y, Block block) {
         float offset = (1024f/16)/1024f;
-        switch (block.getID()) {
+        switch (block.GetID()) {
             case 0: //grass
                 return new float[] {
                     // BOTTOM QUAD(DOWN=+Y)

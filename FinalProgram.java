@@ -24,7 +24,7 @@ public class FinalProgram {
     private DisplayMode displayMode;
     
     // method: start
-    // purpose: Tries to create the window, initialize GL, and render the image.
+    // purpose: Tries to create the window, initialize GL, and render the image through FPCameraController.
     // If an error is found, the stack will catch and return it, terminating the program.    
     public void start() {
     
