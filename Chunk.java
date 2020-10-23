@@ -4,7 +4,7 @@
 * class: CS 4450 – Computer Graphics
 *
 * assignment: final program
-* date last modified: 10/20/20
+* date last modified: 10/25/20
 *
 * purpose: This program creates and renders random blocks for the game.
 *
@@ -31,22 +31,22 @@ public class Chunk {
     private int VBOTextureHandle;
     private Texture texture;
     
-    //method: render
-    //purpose: Renders the chunk    
+    // method: render
+    // purpose: Renders the chunk    
     public void render(){
         glPushMatrix();
         glBindBuffer(GL_ARRAY_BUFFER, VBOTextureHandle);
         glBindTexture(GL_TEXTURE_2D, 1);
         glTexCoordPointer(2,GL_FLOAT,0,0L);
         glBindBuffer(GL_ARRAY_BUFFER,
-        VBOVertexHandle);
+            VBOVertexHandle);
         glVertexPointer(3, GL_FLOAT, 0, 0L);
         glBindBuffer(GL_ARRAY_BUFFER,
-        VBOColorHandle);
+            VBOColorHandle);
         glColorPointer(3,GL_FLOAT, 0, 0L);
         glDrawArrays(GL_QUADS, 0,
-        CHUNK_SIZE *CHUNK_SIZE*
-        CHUNK_SIZE * 24);
+            CHUNK_SIZE *CHUNK_SIZE*
+            CHUNK_SIZE * 24);
         glPopMatrix();
     }
 
@@ -57,10 +57,10 @@ public class Chunk {
         VBOTextureHandle = glGenBuffers(); // placed among the other VBOs
         //the following among our other Float Buffers before our for loops
         FloatBuffer VertexTextureData =
-        BufferUtils.createFloatBuffer((CHUNK_SIZE*
-        CHUNK_SIZE *CHUNK_SIZE)* 6 * 12);
-        VBOColorHandle = glGenBuffers();
-        VBOVertexHandle = glGenBuffers();
+            BufferUtils.createFloatBuffer((CHUNK_SIZE*
+                CHUNK_SIZE *CHUNK_SIZE)* 6 * 12);
+                VBOColorHandle = glGenBuffers();
+                VBOVertexHandle = glGenBuffers();
         FloatBuffer VertexPositionData =
             BufferUtils.createFloatBuffer(
             (CHUNK_SIZE * CHUNK_SIZE *
@@ -85,8 +85,8 @@ public class Chunk {
                             createCubeVertexCol(
                             getCubeColor(
                             Blocks[(int) x]
-                                    [(int) y]
-                                    [(int) z])));
+                            [(int) y]
+                            [(int) z])));
                 }
             }
         }
@@ -111,8 +111,8 @@ public class Chunk {
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
-    //method: createCubeVertexCol
-    //purpose: Makes a column for cubes    
+    // method: createCubeVertexCol
+    // purpose: Makes a column for cubes    
     private float[] createCubeVertexCol(float[] CubeColorArray) {
         float[] cubeColors = new float[CubeColorArray.length * 4 * 6];
         for (int i = 0; i < cubeColors.length; i++) {
@@ -122,8 +122,8 @@ public class Chunk {
         return cubeColors;
     }
     
-    //method: createCube
-    //purpose: Creates a cube     
+    // method: createCube
+    // purpose: Creates a cube     
     public static float[] createCube(float x, float y, float z) {
         int offset = CUBE_LENGTH / 2;
         return new float[] {
@@ -159,9 +159,9 @@ public class Chunk {
         x + offset, y - offset, z };
     }
     
-    //method: getCubeColor
-    //purpose: Returns cube color but only return new float since
-    //program uses texture    
+    // method: getCubeColor
+    // purpose: Returns cube color but only return new float since
+    // program uses texture    
     private float[] getCubeColor(Block block) {
         /*
         // Old as of lecture 14
@@ -176,8 +176,8 @@ public class Chunk {
         return new float[] { 1, 1, 1 };
     }
 
-    //method: Chunk
-    //purpose: Constructor
+    // method: Chunk
+    // purpose: Constructor
     public Chunk(int startX, int startY, int startZ) {
         try{texture = TextureLoader.getTexture("PNG",
             ResourceLoader.getResourceAsStream("terrain.png"));
@@ -225,11 +225,11 @@ public class Chunk {
         rebuildMesh(startX, startY, startZ);
     }
     
-    //method: createTexCube
-    //purpose: Returns the texture based on the cube's type
+    // method: createTexCube
+    // purpose: Returns the texture based on the cube's type
     public static float[] createTexCube(float x, float y, Block block) {
         float offset = (1024f/16)/1024f;
-        switch (block.GetID()) {
+        switch (block.getID()) {
             case 0: //grass
                 return new float[] {
                     // BOTTOM QUAD(DOWN=+Y)

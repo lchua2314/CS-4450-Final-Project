@@ -4,7 +4,7 @@
 * class: CS 4450 – Computer Graphics
 *
 * assignment: final program
-* date last modified: 10/4/20
+* date last modified: 10/25/20
 *
 * purpose: This program contains the main method to run the program.
 * It also controls the initialization of the window, its width and 
@@ -65,7 +65,6 @@ public class FinalProgram {
     private void initGL() {
         glEnable(GL_TEXTURE_2D);
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-        // Above two lines could cause crash.
         glEnableClientState(GL_VERTEX_ARRAY);
         glEnableClientState(GL_COLOR_ARRAY);
         glEnable(GL_DEPTH_TEST);
