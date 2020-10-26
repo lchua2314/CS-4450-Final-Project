@@ -54,12 +54,14 @@ public class Chunk {
     // method: rebuildMesh
     // purpose: Inputs three floats: startX, startY and startZ,
     // creates float buffers, creates textures for cubes, and binds buffers.
+    // Uses the SimplexNoise object to create randomly generated landscapes
+    // on top of the chunk ever time the program is ran.
     public void rebuildMesh(
         float startX, float startY, float startZ) {
         
         Random rand = new Random();
         
-        SimplexNoise noise = new SimplexNoise(100,0.5,rand.nextInt());
+        SimplexNoise noise = new SimplexNoise(100,0.15,rand.nextInt());
         //int i = (int)(xStart+x*((XEnd-xStart)/xResolution));
         
         VBOTextureHandle = glGenBuffers(); // placed among the other VBOs
@@ -79,16 +81,18 @@ public class Chunk {
             CHUNK_SIZE) * 6 * 12);
         for (float x = 0; x < CHUNK_SIZE; x += 1) {
             for (float z = 0; z < CHUNK_SIZE; z += 1) {
+                
                 int i = (int)(startX+x*((CHUNK_SIZE-startX)/CHUNK_SIZE));
                 int j = (int)(startY+z*((CHUNK_SIZE-startY)/CHUNK_SIZE));
                 int k = (int)(startZ+z*((CHUNK_SIZE-startZ)/CHUNK_SIZE));
-                
-                double height = (startY + (int)(100*noise.getNoise(i,j,k)) * CUBE_LENGTH);
-                System.out.println(CHUNK_SIZE);
-                for(float y = 0; y <= height; y++){
-                    
-                    if ( y >= CHUNK_SIZE ) break;
-                    
+                /*
+                System.out.println("i: " + i);
+                System.out.println("j: " + j);
+                System.out.println("k: " + k);
+                */
+                double height = Math.abs(startY + (int)(100*noise.getNoise(i,j,k)) * CUBE_LENGTH);
+                //System.out.println(height);
+                for(float y = 0; y < CHUNK_SIZE - height/4; y++){
                     VertexTextureData.put(createTexCube((float) 0, (float)
                         0,Blocks[(int)(x)][(int) (y)][(int) (z)]));
                     VertexPositionData.put(
