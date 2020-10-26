@@ -225,16 +225,16 @@ public class Chunk {
                     if(r.nextFloat()>0.7f){
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Grass);
-                    }else if(r.nextFloat()>0.4f){
+                    }else if(r.nextFloat()>0.6f){
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Dirt);
-                    }else if(r.nextFloat()>0.2f){
+                    }else if(r.nextFloat()>0.5f){
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Water);
-                    }else if(r.nextFloat()>0.2f){
+                    }else if(r.nextFloat()>0.4f){
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Stone);
-                    }else if(r.nextFloat()>0.1f){
+                    }else if(r.nextFloat()>0.3f){
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Bedrock);
                     }else if(r.nextFloat()>0.0f){
