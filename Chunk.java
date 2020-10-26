@@ -56,6 +56,12 @@ public class Chunk {
     // creates float buffers, creates textures for cubes, and binds buffers.
     public void rebuildMesh(
         float startX, float startY, float startZ) {
+        
+        Random rand = new Random();
+        
+        SimplexNoise noise = new SimplexNoise(100,0.5,rand.nextInt());
+        //int i = (int)(xStart+x*((XEnd-xStart)/xResolution));
+        
         VBOTextureHandle = glGenBuffers(); // placed among the other VBOs
         //the following among our other Float Buffers before our for loops
         FloatBuffer VertexTextureData =
@@ -73,7 +79,16 @@ public class Chunk {
             CHUNK_SIZE) * 6 * 12);
         for (float x = 0; x < CHUNK_SIZE; x += 1) {
             for (float z = 0; z < CHUNK_SIZE; z += 1) {
-                for(float y = 0; y < CHUNK_SIZE; y++){
+                int i = (int)(startX+x*((CHUNK_SIZE-startX)/CHUNK_SIZE));
+                int j = (int)(startY+z*((CHUNK_SIZE-startY)/CHUNK_SIZE));
+                int k = (int)(startZ+z*((CHUNK_SIZE-startZ)/CHUNK_SIZE));
+                
+                double height = (startY + (int)(100*noise.getNoise(i,j,k)) * CUBE_LENGTH);
+                System.out.println(CHUNK_SIZE);
+                for(float y = 0; y <= height; y++){
+                    
+                    if ( y >= CHUNK_SIZE ) break;
+                    
                     VertexTextureData.put(createTexCube((float) 0, (float)
                         0,Blocks[(int)(x)][(int) (y)][(int) (z)]));
                     VertexPositionData.put(
