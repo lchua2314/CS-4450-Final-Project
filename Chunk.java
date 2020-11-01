@@ -85,14 +85,10 @@ public class Chunk {
                 int i = (int)(startX+x*((CHUNK_SIZE-startX)/CHUNK_SIZE));
                 int j = (int)(startY+z*((CHUNK_SIZE-startY)/CHUNK_SIZE));
                 int k = (int)(startZ+z*((CHUNK_SIZE-startZ)/CHUNK_SIZE));
-                /*
-                System.out.println("i: " + i);
-                System.out.println("j: " + j);
-                System.out.println("k: " + k);
-                */
-                double height = Math.abs(startY + (int)(100*noise.getNoise(i,j,k)) * CUBE_LENGTH);
-                //System.out.println(height);
-                for(float y = 0; y < CHUNK_SIZE - height/4; y++){
+
+                double height = CHUNK_SIZE - Math.abs(startY + (int)(100*noise.getNoise(i,j,k)) * CUBE_LENGTH)/4;
+
+                for(float y = 0; y < height; y++){
                     VertexTextureData.put(createTexCube((float) 0, (float)
                         0,Blocks[(int)(x)][(int) (y)][(int) (z)]));
                     VertexPositionData.put(
