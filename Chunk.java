@@ -83,22 +83,17 @@ public class Chunk {
         for (float x = 0; x < CHUNK_SIZE; x += 1) {
             for (float z = 0; z < CHUNK_SIZE; z += 1) {
                 
-                int i = (int)(startX+x*((CHUNK_SIZE-startX)/CHUNK_SIZE));
-                int j = (int)(startY+z*((CHUNK_SIZE-startY)/CHUNK_SIZE));
-                int k = (int)(startZ+z*((CHUNK_SIZE-startZ)/CHUNK_SIZE));
+                int i = (int)(startX+x*((CHUNK_SIZE-startX)/10));
+                int j = (int)(startY+z*((CHUNK_SIZE-startY)/10));
+                int k = (int)(startZ+z*((CHUNK_SIZE-startZ)/9));
 
                 height = CHUNK_SIZE - Math.abs(startY + (int)(100*noise.getNoise(i,j,k)) * CUBE_LENGTH)/4;
 
                 for(float y = 0; y < height; y++){
                     VertexTextureData.put(createTexCube((float) 0, (float)
                         0,Blocks[(int)(x)][(int) (y)][(int) (z)]));
-                    VertexPositionData.put(
-                        createCube((float) (startX + x
-                        * CUBE_LENGTH),
-                        (float)(y*CUBE_LENGTH+
-                        (int)(CHUNK_SIZE*.8)),
-                        (float) (startZ + z *
-                        CUBE_LENGTH)));
+                    VertexPositionData.put(createCube((float) (startX + x * CUBE_LENGTH),
+                        (float)(y*CUBE_LENGTH+(int)(CHUNK_SIZE*.9)),(float) (startZ + z *CUBE_LENGTH)));
                          VertexColorData.put(
                             createCubeVertexCol(
                             getCubeColor(
@@ -219,16 +214,16 @@ public class Chunk {
         for (int x = 0; x < CHUNK_SIZE; x++) {
             for (int y = 0; y < CHUNK_SIZE; y++) {
                 for (int z = 0; z < CHUNK_SIZE; z++) {
-                    if(y == CHUNK_SIZE - 1){
+                    if(y >= 27){
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Grass);
-                    }else if(y >= 20 && y < CHUNK_SIZE - 4){
+                    }else if(y >= 16 && y < CHUNK_SIZE - 10){ // y >= 15 stone stack, 10 - 5 = water 5 stack
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Dirt);
-                    }else if(y >= 20 && y < CHUNK_SIZE - 2){
+                    }else if(y >= 20 && y < CHUNK_SIZE - 5){ // - 5  sand 2 stack
                         Blocks[x][y][z] = new
-                        Block(Block.BlockType.BlockType_Water);
-                    }else if(y > 0 && y < 20){
+                        Block(Block.BlockType.BlockType_Water );
+                    }else if(y > 0 && y < 24){
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Stone);
                     }else if(y == 0){
