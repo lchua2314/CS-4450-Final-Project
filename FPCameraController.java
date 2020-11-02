@@ -66,6 +66,7 @@ public class FPCameraController {
     
     //method: walkForward
     //purpose: Moves the camera forward relative to its current rotation (yaw)
+    //lighting position also gets adjusted
     public void walkForward(float distance)
     {
         float xOffset = distance * (float)Math.sin(Math.toRadians(yaw));
@@ -82,6 +83,7 @@ public class FPCameraController {
     
     //method: walkBackwards
     //purpose: moves the camera backward relative to its current rotation (yaw)
+    //lighting position also gets adjusted
     public void walkBackwards(float distance)
     {
         float xOffset = distance * (float)Math.sin(Math.toRadians(yaw));
@@ -98,6 +100,7 @@ public class FPCameraController {
     
     //method: strafeLeft
     //purpose: Strafes the camera left relative to its current rotation (yaw)
+    //lighting position also gets adjusted
     public void strafeLeft(float distance)
     {
         float xOffset = distance * (float)Math.sin(Math.toRadians(yaw-90));
@@ -114,6 +117,7 @@ public class FPCameraController {
     
     //method: strafeRight
     //purpose: Strafes the camera right relative to its current rotation (yaw)
+    //lighting position also gets adjusted
     public void strafeRight(float distance)
     {
         float xOffset = distance * (float)Math.sin(Math.toRadians(yaw+90));
@@ -144,7 +148,7 @@ public class FPCameraController {
     
     //method: lookThrough
     //purpose: Translates and rotate the matrix so that it looks through the camera
-    //this does basically what gluLookAt() does
+    //this does basically what gluLookAt() does. Lighting also gets adjusted.
     public void lookThrough()
     {
         /*

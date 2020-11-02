@@ -89,6 +89,9 @@ public class FinalProgram {
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
     }
     /*
+    // method: initLightArrays
+    // purpose: Initializes and places lightPosition and whiteLight
+    // with the use of buffers in memory.
     private void initLightArrays() {
         lightPosition = BufferUtils.createFloatBuffer(4);
         lightPosition.put(0.0f).put(0.0f).put(0.0f).put(1.0f).flip();
