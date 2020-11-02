@@ -30,6 +30,7 @@ public class Chunk {
     private Random r;
     private int VBOTextureHandle;
     private Texture texture;
+    private double height;
     
     // method: render
     // purpose: Renders by binding buffers, textures, 
@@ -86,7 +87,7 @@ public class Chunk {
                 int j = (int)(startY+z*((CHUNK_SIZE-startY)/CHUNK_SIZE));
                 int k = (int)(startZ+z*((CHUNK_SIZE-startZ)/CHUNK_SIZE));
 
-                double height = CHUNK_SIZE - Math.abs(startY + (int)(100*noise.getNoise(i,j,k)) * CUBE_LENGTH)/4;
+                height = CHUNK_SIZE - Math.abs(startY + (int)(100*noise.getNoise(i,j,k)) * CUBE_LENGTH)/4;
 
                 for(float y = 0; y < height; y++){
                     VertexTextureData.put(createTexCube((float) 0, (float)
@@ -221,10 +222,10 @@ public class Chunk {
                     if(y == CHUNK_SIZE - 1){
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Grass);
-                    }else if(y >= 20 && y < CHUNK_SIZE - 2){
+                    }else if(y >= 20 && y < CHUNK_SIZE - 4){
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Dirt);
-                    }else if(false){
+                    }else if(y >= 20 && y < CHUNK_SIZE - 2){
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Water);
                     }else if(y > 0 && y < 20){
