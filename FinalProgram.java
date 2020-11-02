@@ -17,11 +17,14 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.util.glu.GLU;
+import java.nio.FloatBuffer;
 
 public class FinalProgram {
     
     private FPCameraController fp = null;
     private DisplayMode displayMode;
+    private FloatBuffer lightPosition;
+    private FloatBuffer whiteLight;
     
     // method: start
     // purpose: Tries to create the window, initialize GL, and render the image through FPCameraController.
@@ -63,6 +66,15 @@ public class FinalProgram {
     // loads camera and Identity matrix, sets up orthographic matrix,
     // Model view and some rendering hints
     private void initGL() {
+        /*
+        initLightArrays();
+        glLight(GL_LIGHT0, GL_POSITION, lightPosition); //sets our light’s position
+        glLight(GL_LIGHT0, GL_SPECULAR, whiteLight);//sets our specular light
+        glLight(GL_LIGHT0, GL_DIFFUSE, whiteLight);//sets our diffuse light
+        glLight(GL_LIGHT0, GL_AMBIENT, whiteLight);//sets our ambient light
+        glEnable(GL_LIGHTING);//enables our lighting
+        glEnable(GL_LIGHT0);//enables light0
+        */
         glEnable(GL_TEXTURE_2D);
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
         glEnableClientState(GL_VERTEX_ARRAY);
@@ -76,6 +88,14 @@ public class FinalProgram {
         glMatrixMode(GL_MODELVIEW);
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
     }
+    /*
+    private void initLightArrays() {
+        lightPosition = BufferUtils.createFloatBuffer(4);
+        lightPosition.put(0.0f).put(0.0f).put(0.0f).put(1.0f).flip();
+        whiteLight = BufferUtils.createFloatBuffer(4);
+        whiteLight.put(1.0f).put(1.0f).put(1.0f).put(0.0f).flip();
+    }
+    */
     
     // method: main
     // purpose: Creates an instance of the FinalProgram class. 
