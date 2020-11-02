@@ -218,19 +218,19 @@ public class Chunk {
         for (int x = 0; x < CHUNK_SIZE; x++) {
             for (int y = 0; y < CHUNK_SIZE; y++) {
                 for (int z = 0; z < CHUNK_SIZE; z++) {
-                    if(r.nextFloat()>0.7f){
+                    if(y == CHUNK_SIZE - 1){
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Grass);
-                    }else if(r.nextFloat()>0.6f){
+                    }else if(y >= 20 && y < CHUNK_SIZE - 2){
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Dirt);
-                    }else if(r.nextFloat()>0.5f){
+                    }else if(false){
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Water);
-                    }else if(r.nextFloat()>0.4f){
+                    }else if(y > 0 && y < 20){
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Stone);
-                    }else if(r.nextFloat()>0.3f){
+                    }else if(y == 0){
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Bedrock);
                     }else if(r.nextFloat()>0.0f){

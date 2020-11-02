@@ -18,6 +18,7 @@ import org.lwjgl.opengl.DisplayMode;
 import static org.lwjgl.opengl.GL11.*;
 import org.lwjgl.util.glu.GLU;
 import java.nio.FloatBuffer;
+import org.lwjgl.BufferUtils;
 
 public class FinalProgram {
     
@@ -66,7 +67,6 @@ public class FinalProgram {
     // loads camera and Identity matrix, sets up orthographic matrix,
     // Model view and some rendering hints
     private void initGL() {
-        /*
         initLightArrays();
         glLight(GL_LIGHT0, GL_POSITION, lightPosition); //sets our light’s position
         glLight(GL_LIGHT0, GL_SPECULAR, whiteLight);//sets our specular light
@@ -74,7 +74,6 @@ public class FinalProgram {
         glLight(GL_LIGHT0, GL_AMBIENT, whiteLight);//sets our ambient light
         glEnable(GL_LIGHTING);//enables our lighting
         glEnable(GL_LIGHT0);//enables light0
-        */
         glEnable(GL_TEXTURE_2D);
         glEnableClientState(GL_TEXTURE_COORD_ARRAY);
         glEnableClientState(GL_VERTEX_ARRAY);
@@ -88,7 +87,7 @@ public class FinalProgram {
         glMatrixMode(GL_MODELVIEW);
         glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
     }
-    /*
+
     // method: initLightArrays
     // purpose: Initializes and places lightPosition and whiteLight
     // with the use of buffers in memory.
@@ -98,7 +97,6 @@ public class FinalProgram {
         whiteLight = BufferUtils.createFloatBuffer(4);
         whiteLight.put(1.0f).put(1.0f).put(1.0f).put(0.0f).flip();
     }
-    */
     
     // method: main
     // purpose: Creates an instance of the FinalProgram class. 
