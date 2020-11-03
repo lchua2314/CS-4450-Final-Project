@@ -30,7 +30,9 @@ public class Chunk {
     private Random r;
     private int VBOTextureHandle;
     private Texture texture;
-    private double height;
+    private int[][] height;
+    private int[][] humidity;
+    private int[][][] level2;
     
     // method: render
     // purpose: Renders by binding buffers, textures, 
@@ -55,16 +57,8 @@ public class Chunk {
     // method: rebuildMesh
     // purpose: Inputs three floats: startX, startY and startZ,
     // creates float buffers, creates textures for cubes, and binds buffers.
-    // Uses the SimplexNoise object to create randomly generated landscapes
-    // on top of the chunk ever time the program is ran.
     public void rebuildMesh(
-        float startX, float startY, float startZ) {
-        
-        Random rand = new Random();
-        
-        SimplexNoise noise = new SimplexNoise(100,0.15,rand.nextInt());
-        //int i = (int)(xStart+x*((XEnd-xStart)/xResolution));
-        
+        float startX, float startY, float startZ) {        
         VBOTextureHandle = glGenBuffers(); // placed among the other VBOs
         //the following among our other Float Buffers before our for loops
         FloatBuffer VertexTextureData =
@@ -82,14 +76,7 @@ public class Chunk {
             CHUNK_SIZE) * 6 * 12);
         for (float x = 0; x < CHUNK_SIZE; x += 1) {
             for (float z = 0; z < CHUNK_SIZE; z += 1) {
-                
-                int i = (int)(startX+x*((CHUNK_SIZE-startX)/10));
-                int j = (int)(startY+z*((CHUNK_SIZE-startY)/10));
-                int k = (int)(startZ+z*((CHUNK_SIZE-startZ)/9));
-
-                height = CHUNK_SIZE - Math.abs(startY + (int)(100*noise.getNoise(i,j,k)) * CUBE_LENGTH)/4;
-
-                for(float y = 0; y < height; y++){
+                for(float y = 0; y < height[(int)x][(int)z]; y++){
                     VertexTextureData.put(createTexCube((float) 0, (float)
                         0,Blocks[(int)(x)][(int) (y)][(int) (z)]));
                     VertexPositionData.put(createCube((float) (startX + x * CUBE_LENGTH),
@@ -201,6 +188,8 @@ public class Chunk {
     // use a random number to determine block types, creates the blocks within the chunk,
     // creates gen buffers, assigns StartX, StartY, and StartZ and lastly, calls rebuildMesh()
     // with integer inputs: startX, startY, and startZ.
+    // Uses Random library and SimplexNoise objects to generate height, humidity 
+    // (spawns either grass or sand), and level2 (stone or dirt spawning below topmost level)
     public Chunk(int startX, int startY, int startZ) {
         try{texture = TextureLoader.getTexture("PNG",
             ResourceLoader.getResourceAsStream("terrain.png"));
@@ -209,27 +198,59 @@ public class Chunk {
         {
             System.out.print("ER-ROAR!");
         }
+        
+        // Generate height in height, humidity, and level2
+        Random rand = new Random();
+        SimplexNoise noise = new SimplexNoise(100,0.15,rand.nextInt());
+        SimplexNoise noise2 = new SimplexNoise(200,0.15,rand.nextInt());
+        SimplexNoise noise3 = new SimplexNoise(200,0.15,rand.nextInt());
+        
+        height = new int[30][30];
+        humidity = new int[30][30];
+        level2 = new int[30][30][30];
+        for (float x = 0; x < CHUNK_SIZE; x += 1) {
+            for (float z = 0; z < CHUNK_SIZE; z += 1) {
+
+                int i = (int)(x*((CHUNK_SIZE)/30));
+                int j = (int)(z*((CHUNK_SIZE)/30));
+                int k = (int)(z*((CHUNK_SIZE)/30));
+
+                height[(int)x][(int)z] = CHUNK_SIZE - Math.abs(startY + (int)(100*noise.getNoise(i,j,k)) * CUBE_LENGTH)/4;
+                i = (int)(x*((CHUNK_SIZE)/10));
+                j = (int)(z*((CHUNK_SIZE)/10));
+                k = (int)(z*((CHUNK_SIZE)/10));
+                humidity[(int)x][(int)z] = Math.abs(startY + (int)(100*noise2.getNoise(i,j,k)) * CUBE_LENGTH)/4;
+                for (float y = 0; y < CHUNK_SIZE; y += 1) {
+                    i = (int)(x*((CHUNK_SIZE)/15));
+                    j = (int)(y*((CHUNK_SIZE)/15));
+                    k = (int)(z*((CHUNK_SIZE)/15));
+                    level2[(int)x][(int)z][(int)y] = Math.abs(startY + (int)(100*noise3.getNoise(i,j,k)) * CUBE_LENGTH)/4;
+                    //System.out.println(level2[(int)x][(int)z][(int)y]);
+                }
+            }
+        }
+        
         r = new Random();
         Blocks = new Block[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
         for (int x = 0; x < CHUNK_SIZE; x++) {
             for (int y = 0; y < CHUNK_SIZE; y++) {
                 for (int z = 0; z < CHUNK_SIZE; z++) {
-                    if(y >= 27){
+                    if(y == height[(int)x][(int)z] - 1 && height[(int)x][(int)z] - 1 > 25 && humidity[(int)x][(int)z] <= 4){
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Grass);
-                    }else if(y >= 16 && y < CHUNK_SIZE - 10){ // y >= 15 stone stack, 10 - 5 = water 5 stack
+                    }else if(y > 0 && y < height[(int)x][(int)z] - 1 && level2[(int)x][(int)z][(int)y] > 3){ // y >= 15 stone stack, 10 - 5 = water 5 stack
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Dirt);
-                    }else if(y >= 20 && y < CHUNK_SIZE - 5){ // - 5  sand 2 stack
+                    }else if(y == height[(int)x][(int)z] - 1 && height[(int)x][(int)z] - 1 <= 25){ // - 5  sand 2 stack
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Water );
-                    }else if(y > 0 && y < 24){
+                    }else if(y > 0 && y < height[(int)x][(int)z] - 1 && level2[(int)x][(int)z][(int)y] <= 3){
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Stone);
                     }else if(y == 0){
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Bedrock);
-                    }else if(r.nextFloat()>0.0f){
+                    }else if(y == height[(int)x][(int)z] - 1 && height[(int)x][(int)z] - 1 > 25 && humidity[(int)x][(int)z] > 4){
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Sand);
                     }else{
