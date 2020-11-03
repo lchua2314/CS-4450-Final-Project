@@ -4,7 +4,7 @@
 * class: CS 4450 – Computer Graphics
 *
 * assignment: final program
-* date last modified: 10/4/20
+* date last modified: 11/2/20
 *
 * purpose: This program creates a cube and controls how the camera
 * works.
