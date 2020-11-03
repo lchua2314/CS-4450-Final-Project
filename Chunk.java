@@ -190,6 +190,7 @@ public class Chunk {
     // with integer inputs: startX, startY, and startZ.
     // Uses Random library and SimplexNoise objects to generate height, humidity 
     // (spawns either grass or sand), and level2 (stone or dirt spawning below topmost level)
+    // This is used for identifying which textures to use for each blocks.
     public Chunk(int startX, int startY, int startZ) {
         try{texture = TextureLoader.getTexture("PNG",
             ResourceLoader.getResourceAsStream("terrain.png"));
