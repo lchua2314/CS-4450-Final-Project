@@ -167,7 +167,7 @@ public class FPCameraController {
     //purpose: Processes controls and graphics every frame
     public void gameLoop()
     {
-        FPCameraController camera = new FPCameraController(0, 0, 0);
+        FPCameraController camera = new FPCameraController(-35, -90, -35);
         float dx = 0.0f;
         float dy = 0.0f;
         float dt = 0.0f; //length of frame
