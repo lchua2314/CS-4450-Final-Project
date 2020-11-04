@@ -30,6 +30,8 @@ public class FPCameraController {
     //the rotation around the X axis of the camera
     private float pitch = 0.0f;
     private Vector3Float me;
+    private boolean isDayTime;
+    private int clockCounter;
     
     // New Chunk Object
     Chunk chunkPosition = null;
@@ -43,8 +45,10 @@ public class FPCameraController {
         position = new Vector3f(x, y, z);
         lPosition = new Vector3f(x,y,z);
         lPosition.x = 40f;
-        lPosition.y = 30f;
-        lPosition.z = 40f;
+        lPosition.y = 60f;
+        lPosition.z = 100f;
+        isDayTime = true;
+        clockCounter = 0;
         // New Chuck object
         chunkPosition = new Chunk((int)x, (int)y, (int)z, 0);
     }
@@ -122,14 +126,46 @@ public class FPCameraController {
         float xOffset = distance * (float)Math.sin(Math.toRadians(yaw+90));
         float zOffset = distance * (float)Math.cos(Math.toRadians(yaw+90));
         position.x -= xOffset;
-        position.z += zOffset;/*
-        System.out.println(position.x + " " + position.y + " " + position.z);
-        lPosition.x+=xOffset;
-        lPosition.z-=zOffset;
+        position.z += zOffset;
+        /*
+        //System.out.println(position.x + " " + position.y + " " + position.z);
+        System.out.println(xOffset + " " + zOffset);
+        lPosition.x-=xOffset;
+        lPosition.z+=zOffset;
         FloatBuffer lightPosition = BufferUtils.createFloatBuffer(4);
         lightPosition.put(lPosition.x).put(
         lPosition.y).put(lPosition.z).put(1.0f).flip();
-        glLight(GL_LIGHT0, GL_POSITION, lightPosition);*/
+        glLight(GL_LIGHT0, GL_POSITION, lightPosition);
+        */
+        
+    }
+
+    // method: moveLight
+    // purpose: Moves the light source up to transition into night time.
+    // After the clockCounter hits 525, lower the light source
+    // to transition into day time and reset the clockCounter.
+    public void moveLight() {
+        if (clockCounter == 525) {
+            isDayTime = !isDayTime;
+            clockCounter = 0;
+        }
+        
+        if (isDayTime) {
+            //lPosition.x-=1; // -3.1999633 83.19934 reaches max sunlight
+            //lPosition.z+=1; // 85.29931 -5.2999616 reachs max darkness
+            lPosition.y+=0.5;
+            clockCounter++;
+        } else if (!isDayTime) {
+            //lPosition.x+=1; // -3.1999633 83.19934 reaches max sunlight
+            //lPosition.z-=1; // 85.29931 -5.2999616 reachs max darkness
+            lPosition.y-=0.5;   
+            clockCounter++;
+        }
+        //System.out.println(lPosition.x + " " + lPosition.y + " " + lPosition.z);
+        FloatBuffer lightPosition = BufferUtils.createFloatBuffer(4);
+        lightPosition.put(lPosition.x).put(
+        lPosition.y).put(lPosition.z).put(1.0f).flip();
+        glLight(GL_LIGHT0, GL_POSITION, lightPosition);
     }
     
     // method: moveUp
@@ -186,6 +222,7 @@ public class FPCameraController {
         {
             time = Sys.getTime();
             lastTime = time;
+            camera.moveLight();
             //distance in mouse movement
             //from the last getDX() call.
             dx = Mouse.getDX();
@@ -197,17 +234,16 @@ public class FPCameraController {
             //controll camera pitch from y movement fromt the mouse
             camera.pitch(dy * mouseSensitivity);
             //when passing in the distance to move
-
             //we times the movementSpeed with dt this is a time scale
             //so if its a slow frame u move more then a fast frame
             //so on a slow computer you move just as fast as on a fast computer
             if (Keyboard.isKeyDown(Keyboard.KEY_W))//move forward
             {
-            camera.walkForward(movementSpeed);
+                camera.walkForward(movementSpeed);
             }
             if (Keyboard.isKeyDown(Keyboard.KEY_S))//move backwards
             {
-            camera.walkBackwards(movementSpeed);
+                camera.walkBackwards(movementSpeed);
             }
 
             //strafe left 
