@@ -33,7 +33,6 @@ public class Chunk {
     private int[][] height;
     private int[][] humidity;
     private int[][][] level2;
-    private boolean alienWorld;
     
     // method: render
     // purpose: Renders by binding buffers, textures, 
@@ -192,7 +191,9 @@ public class Chunk {
     // Uses Random library and SimplexNoise objects to generate height, humidity 
     // (spawns either grass or sand), and level2 (stone or dirt spawning below topmost level)
     // This is used for identifying which textures to use for each blocks.
-    public Chunk(int startX, int startY, int startZ) {
+    // textureNotFound - The Chunk can be reloaded to include the create a 
+    // world with only Default_Block types(they are pink blocks)
+    public Chunk(int startX, int startY, int startZ, boolean textureNotFound) {
         try{texture = TextureLoader.getTexture("PNG",
             ResourceLoader.getResourceAsStream("terrain.png"));
         }
@@ -237,7 +238,10 @@ public class Chunk {
         for (int x = 0; x < CHUNK_SIZE; x++) {
             for (int y = 0; y < CHUNK_SIZE; y++) {
                 for (int z = 0; z < CHUNK_SIZE; z++) {
-                    if(y == height[(int)x][(int)z] - 1 && height[(int)x][(int)z] - 1 > 25 && humidity[(int)x][(int)z] <= 4){
+                    if (textureNotFound) {
+                        Blocks[x][y][z] = new
+                        Block(Block.BlockType.BlockType_Default);                        
+                    }else if(y == height[(int)x][(int)z] - 1 && height[(int)x][(int)z] - 1 > 25 && humidity[(int)x][(int)z] <= 4){
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Grass);
                     }else if(y > 0 && y < height[(int)x][(int)z] - 1 && level2[(int)x][(int)z][(int)y] > 3){ // y >= 15 stone stack, 10 - 5 = water 5 stack

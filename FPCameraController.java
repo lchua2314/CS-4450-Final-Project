@@ -34,9 +34,9 @@ public class FPCameraController {
     // New Chunk Object
     Chunk chunkPosition = null;
     
-    //method: FPCameraController
-    //purpose: Constructor that hold user's camera's view
-    //in 3D space.
+    // method: FPCameraController
+    // purpose: Constructor that hold user's camera's view
+    // in 3D space.
     public FPCameraController(float x, float y, float z)
     {
         //instantiate position Vector3f to the x y z params.
@@ -46,27 +46,27 @@ public class FPCameraController {
         lPosition.y = 30f;
         lPosition.z = 40f;
         // New Chuck object
-        chunkPosition = new Chunk((int)x, (int)y, (int)z);
+        chunkPosition = new Chunk((int)x, (int)y, (int)z, false);
     }
     
-    //method: yaw
-    //purpose: Increment the camera's current yaw rotation (y-axis)(left and right)
+    // method: yaw
+    // purpose: Increment the camera's current yaw rotation (y-axis)(left and right)
     public void yaw(float amount)
     {
         //increment the yaw by the amount param
         yaw += amount;
     }
     
-    //method: pitch
-    //purpose: Increment the camera's current pitch rotation (x-axis)(up and down)
+    // method: pitch
+    // purpose: Increment the camera's current pitch rotation (x-axis)(up and down)
     public void pitch(float amount)
     {
         //increment the pitch by the amount param
         pitch -= amount;
     }
     
-    //method: walkForward
-    //purpose: Moves the camera forward relative to its current rotation (yaw)
+    // method: walkForward
+    // purpose: Moves the camera forward relative to its current rotation (yaw)
     public void walkForward(float distance)
     {
         float xOffset = distance * (float)Math.sin(Math.toRadians(yaw));
@@ -82,8 +82,8 @@ public class FPCameraController {
         glLight(GL_LIGHT0, GL_POSITION, lightPosition);*/
     }
     
-    //method: walkBackwards
-    //purpose: moves the camera backward relative to its current rotation (yaw)
+    // method: walkBackwards
+    // purpose: moves the camera backward relative to its current rotation (yaw)
     public void walkBackwards(float distance)
     {
         float xOffset = distance * (float)Math.sin(Math.toRadians(yaw));
@@ -99,8 +99,8 @@ public class FPCameraController {
         glLight(GL_LIGHT0, GL_POSITION, lightPosition);*/
     }
     
-    //method: strafeLeft
-    //purpose: Strafes the camera left relative to its current rotation (yaw)
+    // method: strafeLeft
+    // purpose: Strafes the camera left relative to its current rotation (yaw)
     public void strafeLeft(float distance)
     {
         float xOffset = distance * (float)Math.sin(Math.toRadians(yaw-90));
@@ -115,8 +115,8 @@ public class FPCameraController {
         glLight(GL_LIGHT0, GL_POSITION, lightPosition);*/
     }
     
-    //method: strafeRight
-    //purpose: Strafes the camera right relative to its current rotation (yaw)
+    // method: strafeRight
+    // purpose: Strafes the camera right relative to its current rotation (yaw)
     public void strafeRight(float distance)
     {
         float xOffset = distance * (float)Math.sin(Math.toRadians(yaw+90));
@@ -132,23 +132,23 @@ public class FPCameraController {
         glLight(GL_LIGHT0, GL_POSITION, lightPosition);*/
     }
     
-    //method: moveUp
-    //purpose: moves the camera up relative to its current rotation (yaw)
+    // method: moveUp
+    // purpose: moves the camera up relative to its current rotation (yaw)
     public void moveUp(float distance)
     {
         position.y -= distance;
     }
     
-    //method: moveDown
-    //purpose: moves the camera down relative to its current rotation (yaw)
+    // method: moveDown
+    // purpose: moves the camera down relative to its current rotation (yaw)
     public void moveDown(float distance)
     {
         position.y += distance;
     }
     
-    //method: lookThrough
-    //purpose: Translates and rotate the matrix so that it looks through the camera
-    //this does basically what gluLookAt() does. Lighting also gets adjusted.
+    // method: lookThrough
+    // purpose: Translates and rotate the matrix so that it looks through the camera
+    // this does basically what gluLookAt() does. Lighting also gets adjusted.
     public void lookThrough()
     {
         //rotate the pitch around the X axis
@@ -163,8 +163,10 @@ public class FPCameraController {
         glLight(GL_LIGHT0, GL_POSITION, lightPosition);
     }
     
-    //method: gameLoop
-    //purpose: Processes controls and graphics every frame
+    // method: gameLoop
+    // purpose: Processes controls and graphics every frame
+    // Press F1 - Reload the Chunk to create a new world!
+    // Press F2 - Reload the Chunk to create a missing textured world!
     public void gameLoop()
     {
         FPCameraController camera = new FPCameraController(-35, -90, -35);
@@ -226,9 +228,13 @@ public class FPCameraController {
             }
             
             if (Keyboard.isKeyDown(Keyboard.KEY_F1)){
-                camera.strafeLeft(movementSpeed);
+                chunkPosition = new Chunk(0,0,0,false);
             }
-
+            
+            if (Keyboard.isKeyDown(Keyboard.KEY_F2)){
+                chunkPosition = new Chunk(0,0,0,true);
+            }
+            
             //set the modelview matrix back to the identity
             glLoadIdentity();
             //look through the camera before you draw anything
@@ -250,8 +256,8 @@ public class FPCameraController {
     
     /*
     // No need for this since lecture 13.
-    //method: render
-    //purpose: renders a cube 
+    // method: render
+    // purpose: renders a cube 
     private void render() {
         try {
             glBegin(GL_QUADS);
