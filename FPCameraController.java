@@ -46,7 +46,7 @@ public class FPCameraController {
         lPosition.y = 30f;
         lPosition.z = 40f;
         // New Chuck object
-        chunkPosition = new Chunk((int)x, (int)y, (int)z, false);
+        chunkPosition = new Chunk((int)x, (int)y, (int)z, 0);
     }
     
     // method: yaw
@@ -227,12 +227,14 @@ public class FPCameraController {
                 camera.moveDown(movementSpeed);
             }
             
+            // Reload the Chunk to a new default world.
             if (Keyboard.isKeyDown(Keyboard.KEY_F1)){
-                chunkPosition = new Chunk(0,0,0,false);
+                chunkPosition = new Chunk(0,0,0,0);
             }
             
+            // Reload the Chunk to a pink block world.
             if (Keyboard.isKeyDown(Keyboard.KEY_F2)){
-                chunkPosition = new Chunk(0,0,0,true);
+                chunkPosition = new Chunk(0,0,0,-1);
             }
             
             //set the modelview matrix back to the identity
