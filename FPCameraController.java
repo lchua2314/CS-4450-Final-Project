@@ -210,11 +210,11 @@ public class FPCameraController {
 
             //strafe left 
             if (Keyboard.isKeyDown(Keyboard.KEY_A)){
-            camera.strafeLeft(movementSpeed);
+                camera.strafeLeft(movementSpeed);
             }
             //strafe right 
             if (Keyboard.isKeyDown(Keyboard.KEY_D)){
-            camera.strafeRight(movementSpeed);
+                camera.strafeRight(movementSpeed);
             }
             //move up
             if (Keyboard.isKeyDown(Keyboard.KEY_SPACE)) {
@@ -223,6 +223,10 @@ public class FPCameraController {
             //move down
             if (Keyboard.isKeyDown(Keyboard.KEY_LSHIFT)) {
                 camera.moveDown(movementSpeed);
+            }
+            
+            if (Keyboard.isKeyDown(Keyboard.KEY_F1)){
+                camera.strafeLeft(movementSpeed);
             }
 
             //set the modelview matrix back to the identity

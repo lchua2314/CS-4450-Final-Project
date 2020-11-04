@@ -33,6 +33,7 @@ public class Chunk {
     private int[][] height;
     private int[][] humidity;
     private int[][][] level2;
+    private boolean alienWorld;
     
     // method: render
     // purpose: Renders by binding buffers, textures, 
@@ -206,9 +207,9 @@ public class Chunk {
         SimplexNoise noise2 = new SimplexNoise(200,0.15,rand.nextInt());
         SimplexNoise noise3 = new SimplexNoise(200,0.15,rand.nextInt());
         
-        height = new int[30][30];
-        humidity = new int[30][30];
-        level2 = new int[30][30][30];
+        height = new int[CHUNK_SIZE][CHUNK_SIZE];
+        humidity = new int[CHUNK_SIZE][CHUNK_SIZE];
+        level2 = new int[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
         for (float x = 0; x < CHUNK_SIZE; x += 1) {
             for (float z = 0; z < CHUNK_SIZE; z += 1) {
 
@@ -242,7 +243,7 @@ public class Chunk {
                     }else if(y > 0 && y < height[(int)x][(int)z] - 1 && level2[(int)x][(int)z][(int)y] > 3){ // y >= 15 stone stack, 10 - 5 = water 5 stack
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Dirt);
-                    }else if(y == height[(int)x][(int)z] - 1 && height[(int)x][(int)z] - 1 <= 25){ // - 5  sand 2 stack
+                    }else if(y == height[(int)x][(int)z] - 1 && height[(int)x][(int)z] - 1 <= CHUNK_SIZE - 5){ // - 5  sand 2 stack
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Water );
                     }else if(y > 0 && y < height[(int)x][(int)z] - 1 && level2[(int)x][(int)z][(int)y] <= 3){
