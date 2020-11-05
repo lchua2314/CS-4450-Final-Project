@@ -239,10 +239,12 @@ public class Chunk {
         for (int x = 0; x < CHUNK_SIZE; x++) {
             for (int y = 0; y < CHUNK_SIZE; y++) {
                 for (int z = 0; z < CHUNK_SIZE; z++) {
-                    if (worldType == -1) {
+                    //F2 World
+                    if (worldType == -1) { 
                         Blocks[x][y][z] = new
-                        Block(Block.BlockType.BlockType_Default);                        
-                    }else if(worldType == -2 && y == height[(int)x][(int)z] - 1 && height[(int)x][(int)z] - 1 <= CHUNK_SIZE - 5){
+                        Block(Block.BlockType.BlockType_Default);}
+                    //F3 World
+                    else if(worldType == -2 && y == height[(int)x][(int)z] - 1 && height[(int)x][(int)z] - 1 <= CHUNK_SIZE - 5){ //F3 World
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Lava);
                     }else if(worldType == -2 && y > 0 && y < height[(int)x][(int)z] - 1 && level2[(int)x][(int)z][(int)y] <= 3){
@@ -256,8 +258,9 @@ public class Chunk {
                         Block(Block.BlockType.BlockType_Netherrack);
                     }else if(worldType == -2 && y > 0 && y < height[(int)x][(int)z] - 1 && level2[(int)x][(int)z][(int)y] > 3){ 
                         Blocks[x][y][z] = new
-                        Block(Block.BlockType.BlockType_Diamondore);
-                    }else if(y == height[(int)x][(int)z] - 1 && height[(int)x][(int)z] - 1 > 25 && humidity[(int)x][(int)z] <= 4){
+                        Block(Block.BlockType.BlockType_Diamondore);}
+                    //F1 World
+                    else if(y == height[(int)x][(int)z] - 1 && height[(int)x][(int)z] - 1 > 25 && humidity[(int)x][(int)z] <= 4){
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Grass);
                     }else if(y > 0 && y < height[(int)x][(int)z] - 1 && level2[(int)x][(int)z][(int)y] > 3){ // y >= 15 stone stack, 10 - 5 = water 5 stack
@@ -610,15 +613,15 @@ public class Chunk {
                     x + offset*13, y + offset*4, 
                     x + offset*14, y + offset*4,
                     // LEFT QUAD
-                    x + offset*14, y + offset*5,
-                    x + offset*13, y + offset*5, 
-                    x + offset*13, y + offset*4, 
                     x + offset*14, y + offset*4,
-                    // RIGHT QUAD
-                    x + offset*14, y + offset*5,
-                    x + offset*13, y + offset*5, 
                     x + offset*13, y + offset*4, 
-                    x + offset*14, y + offset*4,};
+                    x + offset*13, y + offset*5, 
+                    x + offset*14, y + offset*5,
+                    // RIGHT QUAD
+                    x + offset*14, y + offset*4,
+                    x + offset*13, y + offset*4, 
+                    x + offset*13, y + offset*5, 
+                    x + offset*14, y + offset*5,};
             case 10: //diamond ore
                 return new float[] {
                     // BOTTOM QUAD(DOWN=+Y)
@@ -632,25 +635,25 @@ public class Chunk {
                     x + offset*2, y + offset*3, 
                     x + offset*3, y + offset*3,
                     // FRONT QUAD
-                    x + offset*3, y + offset*4,
-                    x + offset*2, y + offset*4, 
-                    x + offset*2, y + offset*3, 
                     x + offset*3, y + offset*3,
+                    x + offset*2, y + offset*3, 
+                    x + offset*2, y + offset*4, 
+                    x + offset*3, y + offset*4,
                     // BACK QUAD
                     x + offset*3, y + offset*4,
                     x + offset*2, y + offset*4, 
                     x + offset*2, y + offset*3, 
                     x + offset*3, y + offset*3,
                     // LEFT QUAD
-                    x + offset*3, y + offset*4,
-                    x + offset*2, y + offset*4, 
-                    x + offset*2, y + offset*3, 
                     x + offset*3, y + offset*3,
-                    // RIGHT QUAD
-                    x + offset*3, y + offset*4,
-                    x + offset*2, y + offset*4, 
                     x + offset*2, y + offset*3, 
-                    x + offset*3, y + offset*3,};
+                    x + offset*2, y + offset*4, 
+                    x + offset*3, y + offset*4,
+                    // RIGHT QUAD
+                    x + offset*3, y + offset*3,
+                    x + offset*2, y + offset*3, 
+                    x + offset*2, y + offset*4, 
+                    x + offset*3, y + offset*4,};
             default: //purple box
                 return new float[] {
                     // BOTTOM QUAD(DOWN=+Y)
