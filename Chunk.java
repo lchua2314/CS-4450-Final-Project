@@ -242,6 +242,21 @@ public class Chunk {
                     if (worldType == -1) {
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Default);                        
+                    }else if(worldType == -2 && y == height[(int)x][(int)z] - 1 && height[(int)x][(int)z] - 1 <= CHUNK_SIZE - 5){
+                        Blocks[x][y][z] = new
+                        Block(Block.BlockType.BlockType_Lava);
+                    }else if(worldType == -2 && y > 0 && y < height[(int)x][(int)z] - 1 && level2[(int)x][(int)z][(int)y] <= 3){
+                        Blocks[x][y][z] = new
+                        Block(Block.BlockType.BlockType_Obsidian);
+                    }else if(worldType == -2 && y == height[(int)x][(int)z] - 1 && height[(int)x][(int)z] - 1 > 25 && humidity[(int)x][(int)z] > 4){
+                        Blocks[x][y][z] = new
+                        Block(Block.BlockType.BlockType_Mycelium);
+                    }else if(worldType == -2 && y == height[(int)x][(int)z] - 1 && height[(int)x][(int)z] - 1 > 25 && humidity[(int)x][(int)z] <= 4){
+                        Blocks[x][y][z] = new
+                        Block(Block.BlockType.BlockType_Netherrack);
+                    }else if(worldType == -2 && y > 0 && y < height[(int)x][(int)z] - 1 && level2[(int)x][(int)z][(int)y] > 3){ 
+                        Blocks[x][y][z] = new
+                        Block(Block.BlockType.BlockType_Diamondore);
                     }else if(y == height[(int)x][(int)z] - 1 && height[(int)x][(int)z] - 1 > 25 && humidity[(int)x][(int)z] <= 4){
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Grass);
@@ -476,6 +491,166 @@ public class Chunk {
                     x + offset*1, y + offset*2, 
                     x + offset*1, y + offset*1, 
                     x + offset*2, y + offset*1,};
+            case 6: //lava
+                return new float[] {
+                    // BOTTOM QUAD(DOWN=+Y)
+                    x + offset*14, y + offset*15, //right, bottom
+                    x + offset*13, y + offset*15, //left, bottom
+                    x + offset*13, y + offset*14, //left, top
+                    x + offset*14, y + offset*14, //right, top
+                    // TOP!
+                    x + offset*14, y + offset*15, 
+                    x + offset*13, y + offset*15, 
+                    x + offset*13, y + offset*14, 
+                    x + offset*14, y + offset*14,
+                    // FRONT QUAD
+                    x + offset*14, y + offset*15, 
+                    x + offset*13, y + offset*15, 
+                    x + offset*13, y + offset*14, 
+                    x + offset*14, y + offset*14,
+                    // BACK QUAD
+                    x + offset*14, y + offset*15, 
+                    x + offset*13, y + offset*15, 
+                    x + offset*13, y + offset*14, 
+                    x + offset*14, y + offset*14,
+                    // LEFT QUAD
+                    x + offset*14, y + offset*15, 
+                    x + offset*13, y + offset*15, 
+                    x + offset*13, y + offset*14, 
+                    x + offset*14, y + offset*14,
+                    // RIGHT QUAD
+                    x + offset*14, y + offset*15, 
+                    x + offset*13, y + offset*15, 
+                    x + offset*13, y + offset*14, 
+                    x + offset*14, y + offset*14,};
+            case 7: //obsidian
+                return new float[] {
+                    // BOTTOM QUAD(DOWN=+Y)
+                    x + offset*6, y + offset*3, //right, bottom
+                    x + offset*5, y + offset*3, //left, bottom
+                    x + offset*5, y + offset*2, //left, top
+                    x + offset*6, y + offset*2, //right, top
+                    // TOP!
+                    x + offset*6, y + offset*3,
+                    x + offset*5, y + offset*3, 
+                    x + offset*5, y + offset*2, 
+                    x + offset*6, y + offset*2,
+                    // FRONT QUAD
+                    x + offset*6, y + offset*3,
+                    x + offset*5, y + offset*3, 
+                    x + offset*5, y + offset*2, 
+                    x + offset*6, y + offset*2,
+                    // BACK QUAD
+                    x + offset*6, y + offset*3,
+                    x + offset*5, y + offset*3, 
+                    x + offset*5, y + offset*2, 
+                    x + offset*6, y + offset*2,
+                    // LEFT QUAD
+                    x + offset*6, y + offset*3,
+                    x + offset*5, y + offset*3, 
+                    x + offset*5, y + offset*2, 
+                    x + offset*6, y + offset*2,
+                    // RIGHT QUAD
+                    x + offset*6, y + offset*3,
+                    x + offset*5, y + offset*3, 
+                    x + offset*5, y + offset*2, 
+                    x + offset*6, y + offset*2,};
+            case 8: //nether rack
+                return new float[] {
+                    // BOTTOM QUAD(DOWN=+Y)
+                    x + offset*8, y + offset*7, //right, bottom
+                    x + offset*7, y + offset*7, //left, bottom
+                    x + offset*7, y + offset*6, //left, top
+                    x + offset*8, y + offset*6, //right, top
+                    // TOP!
+                    x + offset*8, y + offset*7,
+                    x + offset*7, y + offset*7, 
+                    x + offset*7, y + offset*6, 
+                    x + offset*8, y + offset*6,
+                    // FRONT QUAD
+                    x + offset*8, y + offset*7,
+                    x + offset*7, y + offset*7, 
+                    x + offset*7, y + offset*6, 
+                    x + offset*8, y + offset*6,
+                    // BACK QUAD
+                    x + offset*8, y + offset*7,
+                    x + offset*7, y + offset*7, 
+                    x + offset*7, y + offset*6, 
+                    x + offset*8, y + offset*6,
+                    // LEFT QUAD
+                    x + offset*8, y + offset*7,
+                    x + offset*7, y + offset*7, 
+                    x + offset*7, y + offset*6, 
+                    x + offset*8, y + offset*6,
+                    // RIGHT QUAD
+                    x + offset*8, y + offset*7,
+                    x + offset*7, y + offset*7, 
+                    x + offset*7, y + offset*6, 
+                    x + offset*8, y + offset*6,};
+            case 9: //mycelium
+                return new float[] {
+                    // BOTTOM QUAD(DOWN=+Y)
+                    x + offset*15, y + offset*5, //right, bottom
+                    x + offset*14, y + offset*5, //left, bottom
+                    x + offset*14, y + offset*4, //left, top
+                    x + offset*15, y + offset*4, //right, top
+                    // TOP!
+                    x + offset*4, y + offset*1,
+                    x + offset*2, y + offset*1, 
+                    x + offset*2, y + offset*0, 
+                    x + offset*3, y + offset*0,
+                    // FRONT QUAD
+                    x + offset*14, y + offset*5,
+                    x + offset*13, y + offset*5, 
+                    x + offset*13, y + offset*4, 
+                    x + offset*14, y + offset*4,
+                    // BACK QUAD
+                    x + offset*14, y + offset*5,
+                    x + offset*13, y + offset*5, 
+                    x + offset*13, y + offset*4, 
+                    x + offset*14, y + offset*4,
+                    // LEFT QUAD
+                    x + offset*14, y + offset*5,
+                    x + offset*13, y + offset*5, 
+                    x + offset*13, y + offset*4, 
+                    x + offset*14, y + offset*4,
+                    // RIGHT QUAD
+                    x + offset*14, y + offset*5,
+                    x + offset*13, y + offset*5, 
+                    x + offset*13, y + offset*4, 
+                    x + offset*14, y + offset*4,};
+            case 10: //diamond ore
+                return new float[] {
+                    // BOTTOM QUAD(DOWN=+Y)
+                    x + offset*3, y + offset*4, //right, bottom
+                    x + offset*2, y + offset*4, //left, bottom
+                    x + offset*2, y + offset*3, //left, top
+                    x + offset*3, y + offset*3, //right, top
+                    // TOP!
+                    x + offset*3, y + offset*4,
+                    x + offset*2, y + offset*4, 
+                    x + offset*2, y + offset*3, 
+                    x + offset*3, y + offset*3,
+                    // FRONT QUAD
+                    x + offset*3, y + offset*4,
+                    x + offset*2, y + offset*4, 
+                    x + offset*2, y + offset*3, 
+                    x + offset*3, y + offset*3,
+                    // BACK QUAD
+                    x + offset*3, y + offset*4,
+                    x + offset*2, y + offset*4, 
+                    x + offset*2, y + offset*3, 
+                    x + offset*3, y + offset*3,
+                    // LEFT QUAD
+                    x + offset*3, y + offset*4,
+                    x + offset*2, y + offset*4, 
+                    x + offset*2, y + offset*3, 
+                    x + offset*3, y + offset*3,
+                    // RIGHT QUAD
+                    x + offset*3, y + offset*4,
+                    x + offset*2, y + offset*4, 
+                    x + offset*2, y + offset*3, 
+                    x + offset*3, y + offset*3,};
             default: //purple box
                 return new float[] {
                     // BOTTOM QUAD(DOWN=+Y)

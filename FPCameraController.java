@@ -273,6 +273,12 @@ public class FPCameraController {
                 chunkPosition = new Chunk(0,0,0,-1);
             }
             
+            // Reload the Chunk to a hellish world.
+            if (Keyboard.isKeyDown(Keyboard.KEY_F3)){
+                chunkPosition = new Chunk(0,0,0,-2);
+            }
+            
+            
             //set the modelview matrix back to the identity
             glLoadIdentity();
             //look through the camera before you draw anything
