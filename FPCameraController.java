@@ -140,7 +140,7 @@ public class FPCameraController {
         
     }
 
-    // method: moveLight
+    // method: moveLight (This is our 2nd addtional feature)
     // purpose: Moves the light source up to transition into night time.
     // After the clockCounter hits 525, lower the light source
     // to transition into day time and reset the clockCounter.

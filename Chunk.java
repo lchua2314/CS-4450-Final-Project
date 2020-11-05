@@ -196,6 +196,13 @@ public class Chunk {
     // pink blocks).
     // Additional feature 3: Rare spawns (use F1 to reload world to find rare spawns)
     // 1. 1/6 chance to spawn in a tundra biome with snow-dirt blocks and ice
+    // 2. Rare chance to spawn a pumpkin in the world. Conditions to spawn: 
+    //    (a) Normal world in non-tundra.
+    //    (b) A 2D coordinate will be randomly chosen to spawn the pumpkin on.
+    //        However, if it is located on sand or water, it will not spawn.
+    //    The program will notify user if it spawns.
+    // NOTE: If you are looking for our 2nd feature, it is the day/night cycle located in
+    // FPCameraController.java
     public Chunk(int startX, int startY, int startZ, int worldType) {
         try{texture = TextureLoader.getTexture("PNG",
             ResourceLoader.getResourceAsStream("terrain.png"));
@@ -236,8 +243,10 @@ public class Chunk {
             }
         }
         
-        // If spawnSnow == 5, spawn in tundra (1/6 chance)
-        int spawnSnow = rand.nextInt(6);
+        int spawnSnow = rand.nextInt(6); // If spawnSnow == 5, spawn in tundra (1/6 chance)
+        int[][] spawnPumpkin = new int[1][2]; // Spawn a pumpkin in 1/30 spots only if it is not humid or too deep.
+        spawnPumpkin[0][0] = rand.nextInt(30);
+        spawnPumpkin[0][1] = rand.nextInt(30);
         Blocks = new Block[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
         for (int x = 0; x < CHUNK_SIZE; x++) {
             for (int y = 0; y < CHUNK_SIZE; y++) {
@@ -269,6 +278,11 @@ public class Chunk {
                     }else if(spawnSnow == 5 && y == height[(int)x][(int)z] - 1 && height[(int)x][(int)z] - 1 <= CHUNK_SIZE - 5){ // - 5  sand 2 stack
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Ice);
+                    }else if(spawnPumpkin[0][0] == x && spawnPumpkin[0][1] == z && y == height[(int)x][(int)z] - 1 && height[(int)x][(int)z] - 1 > 25 && humidity[(int)x][(int)z] <= 4){
+                        Blocks[x][y][z] = new
+                        Block(Block.BlockType.BlockType_Pumpkin);
+                        spawnPumpkin[0][0] = -1;
+                        System.out.println("Pumpkin spawned!");
                     }else if(y == height[(int)x][(int)z] - 1 && height[(int)x][(int)z] - 1 > 25 && humidity[(int)x][(int)z] <= 4){
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Grass);
@@ -727,6 +741,38 @@ public class Chunk {
                     x + offset*4, y + offset*4, // right top
                     x + offset*4, y + offset*5, // right bottom
                     x + offset*3, y + offset*5}; // left bottom
+            case 13: //pumpkin
+                return new float[] {
+                    // TOP
+                    x + offset*6, y + offset*6, // Top left
+                    x + offset*7, y + offset*6, // Top right
+                    x + offset*7, y + offset*7, // Bottom right
+                    x + offset*6, y + offset*7, // Bottom left
+                    // BOTTOM!
+                    x + offset*6, y + offset*6, // Top left
+                    x + offset*7, y + offset*6, // Top right
+                    x + offset*7, y + offset*7, // Bottom right
+                    x + offset*6, y + offset*7, // Bottom left
+                    // FRONT QUAD
+                    x + offset*7, y + offset*7, // Top left
+                    x + offset*8, y + offset*7, // Top right
+                    x + offset*8, y + offset*8, // Bottom right
+                    x + offset*7, y + offset*8, // Bottom left
+                    // BACK QUAD
+                    x + offset*7, y + offset*8, // Right bottom
+                    x + offset*6, y + offset*8, // left bottom
+                    x + offset*6, y + offset*7, // left top
+                    x + offset*7, y + offset*7, // right top
+                    // LEFT QUAD
+                    x + offset*6, y + offset*7, // left top
+                    x + offset*7, y + offset*7, // right top
+                    x + offset*7, y + offset*8, // right bottom
+                    x + offset*6, y + offset*8, // left bottom
+                    // RIGHT QUAD
+                    x + offset*6, y + offset*7, // left top
+                    x + offset*7, y + offset*7, // right top
+                    x + offset*7, y + offset*8, // right bottom
+                    x + offset*6, y + offset*8}; // left bottom
             default: //purple box
                 return new float[] {
                     // TOP

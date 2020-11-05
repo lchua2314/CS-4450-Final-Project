@@ -37,7 +37,8 @@ public class Block {
         BlockType_Diamondore(10),
         BlockType_Snow(11),
         BlockType_Ice(12),
-        BlockType_Default(12);// Added Default block since Chunk.java needed it. Line 151
+        BlockType_Pumpkin(13),
+        BlockType_Default(14);// Added Default block since Chunk.java needed it. Line 151
 
         private int BlockID;
         
