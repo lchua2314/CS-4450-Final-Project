@@ -603,10 +603,10 @@ public class Chunk {
                     x + offset*2, y + offset*0, 
                     x + offset*3, y + offset*0,
                     // FRONT QUAD
-                    x + offset*14, y + offset*5,
-                    x + offset*13, y + offset*5, 
-                    x + offset*13, y + offset*4, 
                     x + offset*14, y + offset*4,
+                    x + offset*13, y + offset*4, 
+                    x + offset*13, y + offset*5, 
+                    x + offset*14, y + offset*5,
                     // BACK QUAD
                     x + offset*14, y + offset*5,
                     x + offset*13, y + offset*5, 
