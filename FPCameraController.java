@@ -203,6 +203,7 @@ public class FPCameraController {
     // purpose: Processes controls and graphics every frame
     // Press F1 - Reload the Chunk to create a new world!
     // Press F2 - Reload the Chunk to create a missing textured world!
+    // Press F3 - Reload the Chunk to create a hellish world!
     public void gameLoop()
     {
         FPCameraController camera = new FPCameraController(-35, -90, -35);
