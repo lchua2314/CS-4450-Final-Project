@@ -191,9 +191,11 @@ public class Chunk {
     // Uses Random library and SimplexNoise objects to generate height, humidity 
     // (spawns either grass or sand), and level2 (stone or dirt spawning below topmost level)
     // This is used for identifying which textures to use for each blocks.
-    // worldType - The Chunk can be reloaded to include the create a 
+    // Additional feature 1: worldType - The Chunk can be reloaded to include the create a 
     // world with the indicated type (for example, a world with only
     // pink blocks).
+    // Additional feature 3: Rare spawns (use F1 to reload world to find rare spawns)
+    // 1. 1/6 chance to spawn in a tundra biome with snow-dirt blocks and ice
     public Chunk(int startX, int startY, int startZ, int worldType) {
         try{texture = TextureLoader.getTexture("PNG",
             ResourceLoader.getResourceAsStream("terrain.png"));
@@ -234,7 +236,8 @@ public class Chunk {
             }
         }
         
-        r = new Random();
+        // If spawnSnow == 5, spawn in tundra (1/6 chance)
+        int spawnSnow = rand.nextInt(6);
         Blocks = new Block[CHUNK_SIZE][CHUNK_SIZE][CHUNK_SIZE];
         for (int x = 0; x < CHUNK_SIZE; x++) {
             for (int y = 0; y < CHUNK_SIZE; y++) {
@@ -260,7 +263,13 @@ public class Chunk {
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Diamondore);}
                     //F1 World
-                    else if(y == height[(int)x][(int)z] - 1 && height[(int)x][(int)z] - 1 > 25 && humidity[(int)x][(int)z] <= 4){
+                    else if (spawnSnow == 5 && y == height[(int)x][(int)z] - 1 && height[(int)x][(int)z] - 1 > 25) {
+                        Blocks[x][y][z] = new
+                        Block(Block.BlockType.BlockType_Snow);    
+                    }else if(spawnSnow == 5 && y == height[(int)x][(int)z] - 1 && height[(int)x][(int)z] - 1 <= CHUNK_SIZE - 5){ // - 5  sand 2 stack
+                        Blocks[x][y][z] = new
+                        Block(Block.BlockType.BlockType_Ice);
+                    }else if(y == height[(int)x][(int)z] - 1 && height[(int)x][(int)z] - 1 > 25 && humidity[(int)x][(int)z] <= 4){
                         Blocks[x][y][z] = new
                         Block(Block.BlockType.BlockType_Grass);
                     }else if(y > 0 && y < height[(int)x][(int)z] - 1 && level2[(int)x][(int)z][(int)y] > 3){ // y >= 15 stone stack, 10 - 5 = water 5 stack
@@ -304,44 +313,44 @@ public class Chunk {
         switch (block.GetID()) {
             case 0: //grass
                 return new float[] {
-                    // BOTTOM QUAD(DOWN=+Y)
+                    // TOP
                     x + offset*3, y + offset*10, //right, bottom
                     x + offset*2, y + offset*10, //left, bottom
                     x + offset*2, y + offset*9, //left, top
                     x + offset*3, y + offset*9, //right, top
-                    // TOP!
-                    x + offset*3, y + offset*1,
-                    x + offset*2, y + offset*1,
-                    x + offset*2, y + offset*0,
-                    x + offset*3, y + offset*0,
+                    // BOTTOM!
+                    x + offset*3, y + offset*1, // right, bottom
+                    x + offset*2, y + offset*1, // left, bottom
+                    x + offset*2, y + offset*0, // left, top
+                    x + offset*3, y + offset*0, // right, top
                     // FRONT QUAD
-                    x + offset*3, y + offset*0,
-                    x + offset*4, y + offset*0,
-                    x + offset*4, y + offset*1,
-                    x + offset*3, y + offset*1,
+                    x + offset*3, y + offset*0, // Top left
+                    x + offset*4, y + offset*0, // Top right
+                    x + offset*4, y + offset*1, // Bottom right
+                    x + offset*3, y + offset*1, // Bottom left
                     // BACK QUAD
-                    x + offset*4, y + offset*1,
-                    x + offset*3, y + offset*1,
-                    x + offset*3, y + offset*0,
-                    x + offset*4, y + offset*0,
+                    x + offset*4, y + offset*1, // Right bottom
+                    x + offset*3, y + offset*1, // left bottom
+                    x + offset*3, y + offset*0, // left top
+                    x + offset*4, y + offset*0, // right top
                     // LEFT QUAD
-                    x + offset*3, y + offset*0,
-                    x + offset*4, y + offset*0,
-                    x + offset*4, y + offset*1,
-                    x + offset*3, y + offset*1,
+                    x + offset*3, y + offset*0, // left top
+                    x + offset*4, y + offset*0, // right top
+                    x + offset*4, y + offset*1, // right bottom
+                    x + offset*3, y + offset*1, // left bottom
                     // RIGHT QUAD
-                    x + offset*3, y + offset*0,
-                    x + offset*4, y + offset*0,
-                    x + offset*4, y + offset*1,
-                    x + offset*3, y + offset*1};
+                    x + offset*3, y + offset*0, // left top
+                    x + offset*4, y + offset*0, // right top
+                    x + offset*4, y + offset*1, // right bottom
+                    x + offset*3, y + offset*1}; // left bottom
             case 1: //sand
                 return new float[] {
-                    // BOTTOM QUAD(DOWN=+Y)
+                    // TOP
                     x + offset*3, y + offset*2, //right, bottom
                     x + offset*2, y + offset*2, //left, bottom
                     x + offset*2, y + offset*1, //left, top
                     x + offset*3, y + offset*1, //right, top
-                    // TOP!
+                    // BOTTOM
                     x + offset*3, y + offset*2, 
                     x + offset*2, y + offset*2, 
                     x + offset*2, y + offset*1, 
@@ -368,12 +377,12 @@ public class Chunk {
                     x + offset*3, y + offset*1,};
             case 2: //water
                 return new float[] {
-                    // BOTTOM QUAD(DOWN=+Y)
+                    // TOP
                     x + offset*14, y + offset*13, //right, bottom
                     x + offset*13, y + offset*13, //left, bottom
                     x + offset*13, y + offset*12, //left, top
                     x + offset*14, y + offset*12, //right, top
-                    // TOP!
+                    // BOTTOM
                     x + offset*14, y + offset*13, 
                     x + offset*13, y + offset*13, 
                     x + offset*13, y + offset*12, 
@@ -400,12 +409,12 @@ public class Chunk {
                     x + offset*14, y + offset*13,};
             case 3: //dirt
                 return new float[] {
-                    // BOTTOM QUAD(DOWN=+Y)
+                    // TOP
                     x + offset*3, y + offset*1, //right, bottom
                     x + offset*2, y + offset*1, //left, bottom
                     x + offset*2, y + offset*0, //left, top
                     x + offset*3, y + offset*0, //right, top
-                    // TOP!
+                    // BOTTOM
                     x + offset*3, y + offset*1, 
                     x + offset*2, y + offset*1, 
                     x + offset*2, y + offset*0, 
@@ -432,12 +441,12 @@ public class Chunk {
                     x + offset*3, y + offset*0,};
             case 4: //stone
                 return new float[] {
-                    // BOTTOM QUAD(DOWN=+Y)
+                    // TOP
                     x + offset*2, y + offset*1, //right, bottom
                     x + offset*1, y + offset*1, //left, bottom
                     x + offset*1, y + offset*0, //left, top
                     x + offset*2, y + offset*0, //right, top
-                    // TOP!
+                    // BOTTOM
                     x + offset*2, y + offset*1, 
                     x + offset*1, y + offset*1, 
                     x + offset*1, y + offset*0, 
@@ -464,12 +473,12 @@ public class Chunk {
                     x + offset*2, y + offset*0,};
             case 5: //bedrock
                 return new float[] {
-                    // BOTTOM QUAD(DOWN=+Y)
+                    // TOP
                     x + offset*2, y + offset*2, //right, bottom
                     x + offset*1, y + offset*2, //left, bottom
                     x + offset*1, y + offset*1, //left, top
                     x + offset*2, y + offset*1, //right, top
-                    // TOP!
+                    // BOTTOM
                     x + offset*2, y + offset*2, 
                     x + offset*1, y + offset*2, 
                     x + offset*1, y + offset*1, 
@@ -496,12 +505,12 @@ public class Chunk {
                     x + offset*2, y + offset*1,};
             case 6: //lava
                 return new float[] {
-                    // BOTTOM QUAD(DOWN=+Y)
+                    // TOP
                     x + offset*14, y + offset*15, //right, bottom
                     x + offset*13, y + offset*15, //left, bottom
                     x + offset*13, y + offset*14, //left, top
                     x + offset*14, y + offset*14, //right, top
-                    // TOP!
+                    // BOTTOM
                     x + offset*14, y + offset*15, 
                     x + offset*13, y + offset*15, 
                     x + offset*13, y + offset*14, 
@@ -528,12 +537,12 @@ public class Chunk {
                     x + offset*14, y + offset*14,};
             case 7: //obsidian
                 return new float[] {
-                    // BOTTOM QUAD(DOWN=+Y)
+                    // TOP
                     x + offset*6, y + offset*3, //right, bottom
                     x + offset*5, y + offset*3, //left, bottom
                     x + offset*5, y + offset*2, //left, top
                     x + offset*6, y + offset*2, //right, top
-                    // TOP!
+                    // BOTTOM
                     x + offset*6, y + offset*3,
                     x + offset*5, y + offset*3, 
                     x + offset*5, y + offset*2, 
@@ -560,12 +569,12 @@ public class Chunk {
                     x + offset*6, y + offset*2,};
             case 8: //nether rack
                 return new float[] {
-                    // BOTTOM QUAD(DOWN=+Y)
+                    // TOP
                     x + offset*8, y + offset*7, //right, bottom
                     x + offset*7, y + offset*7, //left, bottom
                     x + offset*7, y + offset*6, //left, top
                     x + offset*8, y + offset*6, //right, top
-                    // TOP!
+                    // BOTTOM
                     x + offset*8, y + offset*7,
                     x + offset*7, y + offset*7, 
                     x + offset*7, y + offset*6, 
@@ -592,12 +601,12 @@ public class Chunk {
                     x + offset*8, y + offset*6,};
             case 9: //mycelium
                 return new float[] {
-                    // BOTTOM QUAD(DOWN=+Y)
+                    // TOP
                     x + offset*15, y + offset*5, //right, bottom
                     x + offset*14, y + offset*5, //left, bottom
                     x + offset*14, y + offset*4, //left, top
                     x + offset*15, y + offset*4, //right, top
-                    // TOP!
+                    // BOTTOM
                     x + offset*4, y + offset*1,
                     x + offset*2, y + offset*1, 
                     x + offset*2, y + offset*0, 
@@ -624,12 +633,12 @@ public class Chunk {
                     x + offset*14, y + offset*5,};
             case 10: //diamond ore
                 return new float[] {
-                    // BOTTOM QUAD(DOWN=+Y)
+                    // TOP
                     x + offset*3, y + offset*4, //right, bottom
                     x + offset*2, y + offset*4, //left, bottom
                     x + offset*2, y + offset*3, //left, top
                     x + offset*3, y + offset*3, //right, top
-                    // TOP!
+                    // BOTTOM
                     x + offset*3, y + offset*4,
                     x + offset*2, y + offset*4, 
                     x + offset*2, y + offset*3, 
@@ -654,14 +663,78 @@ public class Chunk {
                     x + offset*2, y + offset*3, 
                     x + offset*2, y + offset*4, 
                     x + offset*3, y + offset*4,};
+            case 11: //snow
+                return new float[] {
+                    // TOP
+                    x + offset*3, y + offset*5, //right, bottom
+                    x + offset*2, y + offset*5, //left, bottom
+                    x + offset*2, y + offset*4, //left, top
+                    x + offset*3, y + offset*4, //right, top
+                    // BOTTOM!
+                    x + offset*3, y + offset*1, // right, bottom
+                    x + offset*2, y + offset*1, // left, bottom
+                    x + offset*2, y + offset*0, // left, top
+                    x + offset*3, y + offset*0, // right, top
+                    // FRONT QUAD
+                    x + offset*4, y + offset*4, // Top left
+                    x + offset*5, y + offset*4, // Top right
+                    x + offset*5, y + offset*5, // Bottom right
+                    x + offset*4, y + offset*5, // Bottom left
+                    // BACK QUAD
+                    x + offset*5, y + offset*5, // Right bottom
+                    x + offset*4, y + offset*5, // left bottom
+                    x + offset*4, y + offset*4, // left top
+                    x + offset*5, y + offset*4, // right top
+                    // LEFT QUAD
+                    x + offset*4, y + offset*4, // left top
+                    x + offset*5, y + offset*4, // right top
+                    x + offset*5, y + offset*5, // right bottom
+                    x + offset*4, y + offset*5, // left bottom
+                    // RIGHT QUAD
+                    x + offset*4, y + offset*4, // left top
+                    x + offset*5, y + offset*4, // right top
+                    x + offset*5, y + offset*5, // right bottom
+                    x + offset*4, y + offset*5}; // left bottom
+            case 12: //ice
+                return new float[] {
+                    // TOP
+                    x + offset*3, y + offset*4, // Top left
+                    x + offset*4, y + offset*4, // Top right
+                    x + offset*4, y + offset*5, // Bottom right
+                    x + offset*3, y + offset*5, // Bottom left
+                    // BOTTOM!
+                    x + offset*3, y + offset*4, // Top left
+                    x + offset*4, y + offset*4, // Top right
+                    x + offset*4, y + offset*5, // Bottom right
+                    x + offset*3, y + offset*5, // Bottom left
+                    // FRONT QUAD
+                    x + offset*3, y + offset*4, // Top left
+                    x + offset*4, y + offset*4, // Top right
+                    x + offset*4, y + offset*5, // Bottom right
+                    x + offset*3, y + offset*5, // Bottom left
+                    // BACK QUAD
+                    x + offset*4, y + offset*5, // Right bottom
+                    x + offset*3, y + offset*5, // left bottom
+                    x + offset*3, y + offset*4, // left top
+                    x + offset*4, y + offset*4, // right top
+                    // LEFT QUAD
+                    x + offset*3, y + offset*4, // left top
+                    x + offset*4, y + offset*4, // right top
+                    x + offset*4, y + offset*5, // right bottom
+                    x + offset*3, y + offset*5, // left bottom
+                    // RIGHT QUAD
+                    x + offset*3, y + offset*4, // left top
+                    x + offset*4, y + offset*4, // right top
+                    x + offset*4, y + offset*5, // right bottom
+                    x + offset*3, y + offset*5}; // left bottom
             default: //purple box
                 return new float[] {
-                    // BOTTOM QUAD(DOWN=+Y)
+                    // TOP
                     x + offset*4, y + offset*14, //right, bottom
                     x + offset*3, y + offset*14, //left, bottom
                     x + offset*3, y + offset*13, //left, top
                     x + offset*4, y + offset*13, //right, top
-                    // TOP!
+                    // BOTTOM
                     x + offset*4, y + offset*14,
                     x + offset*3, y + offset*14,
                     x + offset*3, y + offset*13,
